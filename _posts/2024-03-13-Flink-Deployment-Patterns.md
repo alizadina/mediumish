@@ -126,7 +126,7 @@ Confluent Cloud for Apache Flink has a deep integration with [Role-Based Access
 
 Confluent Cloud for Apache Flink is available on AWS, Azure, and GCP. Refer to this [link](https://docs.confluent.io/cloud/current/flink/index.html#af-long-is-everywhere) for the supported region wise list.
 
-Learn more about Confluent’s [cloud-native,serverless Apache Flink® service](https://www.confluent.io/product/flink/)—now
+Learn more about Confluent’s [cloud-native,serverless Apache Flink® service](https://cnfl.io/49m1KuN)—now
 generally available on AWS, Azure, and Google Cloud.
 
 # Conclusion
