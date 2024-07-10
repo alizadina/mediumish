@@ -3,7 +3,7 @@ layout: post
 title: "Kafka Service Locator"
 authors: raghav
 categories: [Platform Engineering, Infrastructure, Kafka, Unified Access Layer]
-image: 
+image: assets/blog-images/kafka_service_locator/kafka_service_locator_1.png
 featured: false
 hidden: false
 teaser: Unified access layer to the Kafka resources
