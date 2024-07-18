@@ -165,7 +165,7 @@ public class ServiceLocatorProducer<K,V> implements Producer {
             return kafkaProducer.send(producerRecord, callback);
         } else {
             System.out.printf(
-                    "Need to update bootstrap servers config to {%s} and the topic config to {%s} and create a new Producer\n", bootstrapServers, topic);
+                    "Need to update bootstrap servers config to %s and the topic config to %s and create a new Producer\n", bootstrapServers, topic);
             this.close();
             properties.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             kafkaProducer = new KafkaProducer(properties);
@@ -399,7 +399,7 @@ public class ServiceLocatorConsumer<K, V> implements Consumer<K, V> {
         if (!this.properties.get(BOOTSTRAP_SERVERS_CONFIG).equals(bootstrapServers) ||
                 !this.listTopics().containsKey(topic)) {
             System.out.printf(
-                    "Need to update bootstrap servers config to {%s} from {%s} and create a new Consumer\n", bootstrapServers, properties.get(BOOTSTRAP_SERVERS_CONFIG));
+                    "Need to update bootstrap servers config to %s from %s and create a new Consumer\n", bootstrapServers, properties.get(BOOTSTRAP_SERVERS_CONFIG));
             properties.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
             this.unsubscribe();
