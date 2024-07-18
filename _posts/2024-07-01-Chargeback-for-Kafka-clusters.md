@@ -5,7 +5,7 @@ authors: ashwin
 categories: [Platform Engineering, Infrastructure, Kafka, Cost]
 image: assets/blog-images/kafka_chargeback_blog/TitleImage.jpg
 featured: false
-hidden: true
+hidden: false
 teaser: Solving for cost attribution and chargeback in Multi-tenant Kafka clusters
 toc: true
 ---

@@ -5,6 +5,8 @@ author: p6
 categories: [ Platform Engineering, Data, Infrastructure, Kafka, Kong, Kubernetes ]
 image: assets/blog-images/platform-arch-model.svg
 teaser: Data, APIs and Cloud native infrastructure
+featured: true
+hidden: true
 toc: true
 ---
 
