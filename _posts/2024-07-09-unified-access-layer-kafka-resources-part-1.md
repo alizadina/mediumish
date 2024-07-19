@@ -72,15 +72,15 @@ In this approach, we provide a local kafka proxy embedded, ideally embedded insi
  
 This provides for robust L4-L7 routing capabilities as well as concerns like credential injection to the upstream. If mTLS is involved, life can be made even easier and certificates can be managed with SPIFFE or equivalent. Additional points for TCP observability. In Envoy land, you have the Kafka mesh and broker filters which can help accomplish this with kafka protocol support as well as additional metrics. Finally, this provides polyglot support out of the box because all this happens transparently to the kafka client at the network level.
 
-The only thing is, this works well in maybe 50% of the use-cases. Mostly when Kubernetes is in the game and ideally both the Kafka cluster and the clients being run on containers, with k8s and ideally a service mesh. But larger, more complex use-cases usually require mesh federation, multi-cluster meshes and networking complexity which can quickly spin out of control.
+The only thing is, this works well in maybe 50% of the use-cases. Mostly when Kubernetes is in the game and ideally both the Kafka cluster and the clients being run on containers, with k8s and ideally a service mesh. But larger, more complex use-cases usually require mesh federation, multi-cluster meshes and networking complexity which can quickly spin out of control. Some of the downsides listed in [Approach 2](#approach-2-use-a-service-mesh-for-kubernetes-environment) is also applicable here.
 
 # Approach 4: Discover Topics using a Data Catalog + Self-Service Portal
 
-You need a data catalog of some sort that supports streams. Streams must be discovered through a crawler or agent and registered into the catalog. Confluent has a stream catalog as well. GCP supports a catalog for Pub-Sub. Azure supports Azure Catalog. AWS Glue Catalog unfortunately has no support for streams. Collibra has some limited support for Kafka. Apache Atlas is the only OSS one. For everything else, there’s the Hive metastore. We can also look at OpenMetadata, Databricks unity catalog and Amundsen among others.
+You need a data catalog of some sort that supports streams. Streams must be discovered through a crawler or agent and registered into the catalog. Confluent has a streams catalog. GCP supports a catalog for Pub-Sub. Azure supports Azure Catalog. AWS Glue Catalog unfortunately has no support for streams. Collibra has some limited support for Kafka. Apache Atlas is the only Open Source solution. For everything else, there’s the Hive metastore. We can also look at OpenMetadata, Databricks unity catalog and Amundsen among others.
 
-All of the above broadly captures business and technical metadata at best. You still need a discovery interface to query by these parameters.
+All of the above broadly captures business and technical metadata at best. You still need a discovery interface to query by these parameters. Ideally, you also need credential vending.
 
-Ideally, you also need credential vending.
+Kafka Streams catalogs offer benefits such as improved metadata management and easier integration with external systems, they also come with potential downsides related to complexity, performance, consistency, vendor lock-in, maintenance, and learning curve. Careful evaluation of these factors is essential to determine if the use of a catalog is suitable for your specific streaming application and organizational needs.
 
 # Conclusion
 
