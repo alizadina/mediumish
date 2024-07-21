@@ -1,0 +1,15 @@
+<div class="share sticky-top sticky-top-offset post-ctas">
+  <ul>
+    {% for cta in page.ctas%}
+    <li class="ml-1 mr-1">
+        {% if cta.description %}
+      <p class="m-0 mt-1">{{cta.description}}</p>
+      {% endif %}
+      <a target="_blank" href="{%if cta.url %}{{cta.url}}{%endif%}">
+        {{cta.title}}
+      </a>
+      
+    </li>
+    {% endfor %}
+  </ul>
+</div>
