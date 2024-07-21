@@ -110,12 +110,9 @@ listeners=CONTROLLER://:9093
 
 
 * Start each controller, specifying the configuration file with migration enabled.
-
-    ```
+```
 ./bin/kafka-server-start.sh ./etc/kafka/kraft/controller.properties
 ```
-
-
 
 **Step 5: Enable migration on the brokers**
 
@@ -132,7 +129,7 @@ listeners=CONTROLLER://:9093
     Following is an example configuration file for a broker that is ready for the KRaft migration.
 
 
-    ```
+```
 broker.id=0
 listeners=PLAINTEXT://:9092
 advertised.listeners=PLAINTEXT://localhost:9092
@@ -153,10 +150,7 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
 # KRaft controller quorum configuration
   controller.quorum.voters=3000@localhost:9093
   controller.listener.names=CONTROLLER
-
 ```
-
-
 
 **Step 6: Migrate the brokers**
 
@@ -173,7 +167,7 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
     Following is an example of how a server.properties file for a migrated broker might look. Note that ZooKeeper-specific properties are commented out.
 
 
-    ```
+```
 process.roles=broker
 node.id=0
 listeners=PLAINTEXT://:9092
@@ -193,9 +187,7 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
   controller.listener.names=CONTROLLER
 # If using ACLs, change the authorizer from AclAuthorizer used for ZooKeeper to the StandardAuthorizer used for KRaft.
   authorizer.class.name=kafka.security.authorizer
-
 ```
-
 
 
 **Step 7: Take KRaft controllers out of migration mode**
@@ -208,7 +200,7 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
     Example `controller.properties` File for KRaft Mode
 
 
-    ```
+```
 process.roles=controller
 node.id=3000
 controller.quorum.voters=3000@localhost:9093
