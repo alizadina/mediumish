@@ -2,7 +2,7 @@
 * ERRORs: 0
 * WARNINGs: 0
 * ALERTS: 2 -->
-<h5><strong>Introduction</strong></h5>
+<h3><strong>Introduction</strong></h3>
 <p>
 In its evolution, Kafka has recently shifted away from relying on ZooKeeper to
 manage its essential metadata and now embraces a quorum-based controller using
