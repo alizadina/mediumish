@@ -75,10 +75,13 @@ subgraph K2["Kafka Cluster 2"]
 
 ### Catalog Service
 
-Catalog Service. This is implemented in the Kong API Gateway with 1/ A service that represents the Catalog Service upstream, 2/ A route “/kafka-service-gw” on the service, 3/ A custom plugin (or a pre-functions/post-functions plugin) that has a set of rules configured to retrieve the right Kafka bootstrap servers and topic information based on a set of headers (Channel, ServiceType, Organization). All these calls are protected using Basic Auth.
+This represents the catalog of all the Kafka resources that are needed by Clients (Producers and Consumers). This is implemented in the Kong API Gateway with 
+- A service that represents the Catalog Service upstream
+- A route “/kafka-service-gw” on the service
+- A custom plugin (or a pre-functions/post-functions plugin) that has a set of rules configured to retrieve the right Kafka bootstrap servers and topic information based on a set of query parameters (Channel, ServiceType, Organization). Clients can be either 1 call (ideally) or multiple calls to retrieve the information.
+- Auth: all these calls are protected using Basic Auth
 
 The code can be found [here](https://github.com/Platformatory/kong-service-gateway)
-
 
 ### Java Implementation for Kafka Producer and Consumer
 
