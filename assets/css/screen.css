@@ -11,14 +11,20 @@ License: https://www.wowthemes.net/freebies-license/
     padding: 1rem 0rem;
 } */
 
-a {
-    color: #00ab6b;
+li a {
+    color: #111111;
     transition: all 0.2s;
+    text-decoration: underline;
 }
-
-a:hover {
+.lead h3{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+li a{
+    font-weight: bold       ;
+}
+li a:hover {       
     color: #038252;
-    text-decoration: none;
+    text-decoration: underline;
 }
 .wrapfooter{
     display: flex;
@@ -259,7 +265,7 @@ section.recent-posts {
 }
 
 .toc ul {
-    list-style: lower-roman;
+    list-style: decimal;
     font-weight: 500;
 }
 
@@ -364,11 +370,12 @@ span.post-read-more a:hover {
 
 .mainheading h1.sitetitle {
     font-weight: 600;
+    font-family: fangsong;
     /* font-family: Merriweather; */
     font-size: 2em;
 }
 .mainheading .lead {
-    font-size: 0.8em;   
+    font-size: 0.9em;   
     text-align: center;      
 }
 

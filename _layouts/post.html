@@ -7,8 +7,8 @@ post_class: post-template
 
 <!-- Begin Article
 ================================================== -->
-<div class="container">
-    <div class="row">   
+<div class="">
+    <div class="row">           
 
         <!-- Post Share -->
         <div class="col-md-2 pl-0 d-none d-md-block">
@@ -18,7 +18,7 @@ post_class: post-template
         <!-- Post -->
         {% assign author = site.authors[page.author] %}
 
-        <div class="{% if page.ctas %}col-md-8{% else %} col-md-10 {% endif %} flex- flex-md-     ">
+        <div class="col-md-8 flex- flex-md-     ">
             <div class="mainheading">
 
                 <!-- Author Box -->
@@ -87,17 +87,7 @@ post_class: post-template
 
             <!-- Post Content -->
             <div class="article-post">
-                <!-- Toc if any -->
-                {% if page.toc %}
-                {% if page.beforetoc %}
-                <p><em>{{page.beforetoc}}</em></p>
-                {% endif %}
-                <div class="toc mt-4 mb-4 lead">
-                    <h3 class="font-weight-bold">Summary</h3>
-                    {% include toc.html html=content %}
-                </div>
-                {% endif %}
-                <!-- End Toc -->
+                
                 {{content}}
             </div>
 
@@ -220,12 +210,27 @@ post_class: post-template
 
         </div>
         <!-- End Post -->
+        <div class="col-md-2 flex-first flex-md-unordered p-0">
+            <div >
+                <!-- Toc if any -->
+                {% if page.toc %}
+                {% if page.beforetoc %}
+                <p><em>{{page.beforetoc}}</em></p>
+                {% endif %}
+                <div class="toc mt-4 mb-4 lead">
+                    <h3 class="font-weight-bold">Summary</h3>
+                    {% include toc.html html=content %}
+                </div>
+                {% endif %}
+                <!-- End Toc -->
+               
+            </div>
          {% if page.ctas%}
-        <div class="col-md-2 p-0">
             {% include postcta.html %}
-        </div>
         {% endif %}
-    <div class="col-md-2 d-md-none pl-0">
+    </div>
+
+    <div class="col-md-2 d-md-none d-block pl-0">
         {% include share.html %}
     </div>
 
