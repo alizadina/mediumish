@@ -74,24 +74,19 @@ Before beginning the migration process, our Kafka brokers are currently operatin
 * Upon startup, KRaft controllers establish a quorum and elect a leader.
 * Controllers enter a waiting state for Kafka brokers to register.
 
-    ```
+```
 process.roles=controller
 node.id=3000
 controller.quorum.voters=3000@localhost:9093
 controller.listener.names=CONTROLLER
 listeners=CONTROLLER://:9093
-
 # Enable the migration
   zookeeper.metadata.migration.enable=true
-
 # ZooKeeper client configuration
   zookeeper.connect=localhost:2181
-
 # Enable migrations for cluster linking
   confluent.cluster.link.metadata.topic.enable=true
-
-# Other configuration entries ...
-
+# Other configuration entries
 ```
 
 
@@ -187,20 +182,15 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
 
 # Remove the IBP, KRaft uses "metadata.version" feature flag
 # inter.broker.protocol.version=3.6
-
 # Remove the migration enabled flag
 # zookeeper.metadata.migration.enable=true
-
 # Remove the cluster linking metadata topic setting
 # confluent.cluster.link.metadata.topic.enable=true
-
 # Remove ZooKeeper client configuration
 # zookeeper.connect=localhost:2181
-
 # Keep the KRaft controller quorum configuration
   controller.quorum.voters=3000@localhost:9093
   controller.listener.names=CONTROLLER
-
 # If using ACLs, change the authorizer from AclAuthorizer used for ZooKeeper to the StandardAuthorizer used for KRaft.
   authorizer.class.name=kafka.security.authorizer
 
