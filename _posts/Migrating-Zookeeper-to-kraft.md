@@ -55,10 +55,6 @@ Before beginning the migration process, our Kafka brokers are currently operatin
 * You must format storage for your Kafka cluster with the ID of the existing cluster. You can get this ID with the zookeeper-shell tool.
 
 
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image1.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
 ![Image-2](../assets/blog-images/migrations/Image2.png)
 
 
@@ -97,7 +93,6 @@ listeners=CONTROLLER://:9093
 
 * Format storage on each node with the ID and the controller configuration file.
 
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 ![Image-1](../assets/blog-images/migrations/image1.png)
 
