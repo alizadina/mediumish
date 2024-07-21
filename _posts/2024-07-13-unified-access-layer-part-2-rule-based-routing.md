@@ -18,7 +18,58 @@ This is the Part 2 which is a follow up of [Part 1](https://platformatory.io/blo
 
 Just to recap, here we are trying to build the pattern where a language specific SDK handles the Kafka resources discovery by talking to a catalog service.
 
-Let’s refer the overall architecture diagram above.
+Let’s refer the overall architecture diagram:
+<div id="rbs" class="mermaid">
+flowchart LR
+
+ subgraph PRODUCERS["Producers"]
+        P1("Producer 1")
+        P2("Producer 2")
+        P3("Producer 3")
+  end
+ subgraph CG1["Consumer Group 1"]
+        C1("Consumer 1")
+  end
+ subgraph CG2["Consumer Group 2"]
+        C2("Consumer 1")
+        C3("Consumer 2")
+  end
+ subgraph CG3["Consumer Group 3"]
+        C4("Consumer 1")
+        C5("Consumer 2")
+  end
+
+ subgraph GW["Rule Based Routing Layer"]
+    direction LR
+        API["APIs (Kong)"]
+        US["Upstream (Catalog Service)"]
+  end
+ subgraph K1["Kafka Cluster 1"]
+        B1["Broker 1"]
+        B2["Broker 2"]
+        B3["Broker 3"]
+  end
+subgraph K2["Kafka Cluster 2"]
+        B4["Broker 1"]
+        B5["Broker 2"]
+        B6["Broker 3"]
+  end
+
+
+    P1 & P2 & P3 -- 1.GetInfo --> GW -- 2.Response --> P1 & P2 & P3
+    CG1 & CG2 & CG3  -- 1.GetInfo --> GW -- 2.Response --> CG1 & CG2 & CG3
+    P1 -- 3.Produces --> K1
+    P2 -- 3.Produces --> K2
+    P3 -- 3.Produces --> CC
+    API --> US
+    K1 -- 4.Consumes --> CG1
+    K2 -- 4.Consumes --> CG2
+    CC -- 4.Consumes --> CG3
+
+    %% Styling
+    classDef kafkaStyle fill:#e0f7e9,stroke:#4caf50,stroke-width:2px;
+    class K1,K2 kafkaStyle;
+</div>
 
 ## Implementation
 
