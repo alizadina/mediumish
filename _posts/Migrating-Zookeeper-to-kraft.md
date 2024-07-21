@@ -1,7 +1,10 @@
-﻿<!-- You have some errors, warnings, or alerts. If you are using reckless mode, turn it off to see inline alerts.
-* ERRORs: 0
-* WARNINGs: 0
-* ALERTS: 2 -->
+---
+layout: post
+title:  "Migrating Zookeeper to Kraft"
+author: Shivaprakash Akki
+image: assets/blog-images/migrations/0_TB4m7ZfPMgHF_ljN.png
+toc: true
+---
 <h3><strong>Introduction</strong></h3>
 <p>
 In its evolution, Kafka has recently shifted away from relying on ZooKeeper to
