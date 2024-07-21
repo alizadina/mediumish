@@ -168,15 +168,20 @@ listener.security.protocol.map=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
 
 # Remove the IBP, KRaft uses "metadata.version" feature flag
 # inter.broker.protocol.version=3.6
+
 # Remove the migration enabled flag
 # zookeeper.metadata.migration.enable=true
+
 # Remove the cluster linking metadata topic setting
 # confluent.cluster.link.metadata.topic.enable=true
+
 # Remove ZooKeeper client configuration
 # zookeeper.connect=localhost:2181
+
 # Keep the KRaft controller quorum configuration
   controller.quorum.voters=3000@localhost:9093
   controller.listener.names=CONTROLLER
+
 # If using ACLs, change the authorizer from AclAuthorizer used for ZooKeeper to the StandardAuthorizer used for KRaft.
   authorizer.class.name=kafka.security.authorizer
 ```
