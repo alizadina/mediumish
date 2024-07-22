@@ -377,11 +377,26 @@ span.post-read-more a:hover {
 .mainheading .lead {
     font-size: 0.9em;   
     text-align: center;      
-}
+}       
 
 .mainheading h1.posttitle {
     font-weight: 700;
     margin-bottom: 1rem;
+}
+
+@media (max-width:780px) {
+    .toc {
+        padding: 0 4px;
+    }      
+    .toc h3 {
+        padding: 0 8px;
+    }
+    .mainheading h1.sitetitle{  
+        font-size: 1.5em !important;
+    }
+    .mainheading .lead {
+        font-size: 0.8em !important;
+    }
 }
 
 .footer {
