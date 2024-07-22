@@ -385,9 +385,12 @@ span.post-read-more a:hover {
 }
 
 @media (max-width:780px) {
-    .toc {
+    .navbar-expand-lg.navbar-light.bg-white.fixed-top> div{
+        justify-content: space-evenly;
+    }
+    .toc {                  
         padding: 0 4px;
-    }      
+    }       
     .toc h3 {
         padding: 0 8px;
     }
