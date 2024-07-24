@@ -5,7 +5,7 @@ authors: ashwin
 categories: [Platform Engineering, Infrastructure, Kafka, Data, Retail]
 image: assets/blog-images/real_time_retail/RealTimeRetailTitle.jpg
 featured: false
-hidden: true
+hidden: false
 teaser: Discover how real-time data architecture can revolutionize retail operations, from customer engagement to dynamic pricing and inventory management.
 toc: true
 ---
