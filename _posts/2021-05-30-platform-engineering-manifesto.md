@@ -13,7 +13,7 @@ ctas:
     description: "Have questions or need assistance? Our team is here to help"
     url: "/contact/"
 
-teaser: Platform Eng    ineering is dead. Long live platform engineering!
+teaser: Platform Engineering is dead. Long live platform engineering!
 toc: true
 ---
 
