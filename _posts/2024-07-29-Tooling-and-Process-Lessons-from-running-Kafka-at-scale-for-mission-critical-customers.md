@@ -3,8 +3,8 @@ layout: post
 title:  "Tooling and Process: Lessons from running Kafka at scale for mission critical customers"
 categories: [Apache Kafka, Mission-Critical Applications, High Availability Systems, Cluster Management, Performance Optimization, Operational Challenges, Kafka at Scale, SRE Practices, ]
 teaser: Dive into our journey of deploying Apache Kafka at scale for fintech clients, navigating challenges and implementing solutions for mission-critical success
-author: Arun B Bhat
-image: assets/blog-images/running-kafka-at-scale/Arun.png
+author: Arun
+image: assets/blog-images/running-kafka-at-scale/kafka.png
 toc: true
 ---
 
@@ -196,9 +196,9 @@ This tool addresses several challenges commonly faced when analyzing Kafka compo
 * **Time Overhead:** Fetching or viewing logs spread across multiple servers can be time-consuming. This tool reduced the overhead by providing a unified interface to access logs from different servers.
 * **Log Searchability:** Searching for errors using `grep` in large log files is cumbersome. With "kafka-cp-log-monitor," logs are searchable based on component type, hostname, log level, and more, significantly speeding up the triage process.
 
-Here is a demo of [Kafka-CP-Log-Monitor](https://www.youtube.com/watch?v=rWhrKLZ8jSg&list=PLADPFS_OKuJxtFGTc15TOiRRfsqQSPTlF&index=3&t=1s). 
+Here is a demo of [Kafka-CP-Log-Monitor](https://www.youtube.com/watch?v=rWhrKLZ8jSg). 
 
-[![Kafka-CP-Log-Monitor](../assets/blog-images/running-kafka-at-scale/logmonitor.png)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+[![Kafka-CP-Log-Monitor](../assets/blog-images/running-kafka-at-scale/logmonitor.png)](https://www.youtube.com/watch?v=rWhrKLZ8jSg)
 
 ## **Kafka-cp-jmx-monitor**
 
@@ -213,9 +213,9 @@ Here is a demo of [Kafka-CP-Log-Monitor](https://www.youtube.com/watch?v=rWhrKLZ
 
 The implementation of "kafka-cp-jmx-monitor" gave us a comprehensive understanding of the cluster's operational health, enabling us to predict and address potential issues before they escalated into significant problems. By visualizing trends and patterns in Kafka's performance, we gained valuable insights for capacity planning and resource allocation. Additionally, we configured alerts to detect anomalies at both the cluster and individual node levels, allowing us to avoid many major potential issues and drastically reduce the occurrence of problems across the cluster.
 
-Here is a small demo of [Kafka-cp-jmx-dashboard](https://www.youtube.com/watch?v=1Mr2iy2RkA8&list=PLADPFS_OKuJxtFGTc15TOiRRfsqQSPTlF&index=5).
+Here is a small demo of [Kafka-cp-jmx-dashboard](https://www.youtube.com/watch?v=1Mr2iy2RkA8).
 
-[![Kafka-cp-jmx-Monitor](../assets/blog-images/running-kafka-at-scale/jmxmonitor.png)](https://www.youtube.com/watch?v=1Mr2iy2RkA8&list=PLADPFS_OKuJxtFGTc15TOiRRfsqQSPTlF&index=5)
+[![Kafka-cp-jmx-Monitor](../assets/blog-images/running-kafka-at-scale/jmxmonitor.png)](https://www.youtube.com/watch?v=1Mr2iy2RkA8)
 
 
 ## **Kafka-cp-deploy-manager**
@@ -241,9 +241,9 @@ Efficient deployment and configuration management are fundamental to running Kaf
 
 With "kafka-cp-deploy-manager," we achieved consistent deployment pipelines, minimizing errors and ensuring efficient version upgrades and rollbacks. The tool's integration with Jenkins allowed us to streamline the deployment process, enabling faster response times to changes and ensuring the clusters remained aligned with business needs.
 
-Here is a demo of [Kafka-cp-deploy-manager](https://www.youtube.com/watch?v=oRAipiWWIDg&list=PLADPFS_OKuJxtFGTc15TOiRRfsqQSPTlF&index=7).
+Here is a demo of [Kafka-cp-deploy-manager](https://www.youtube.com/watch?v=oRAipiWWIDg).
 
-[![Kafka-cp-deploy-Monitor](../assets/blog-images/running-kafka-at-scale/deploymentmanager.png)](https://www.youtube.com/watch?v=oRAipiWWIDg&list=PLADPFS_OKuJxtFGTc15TOiRRfsqQSPTlF&index=7)
+[![Kafka-cp-deploy-Monitor](../assets/blog-images/running-kafka-at-scale/deploymentmanager.png)](https://www.youtube.com/watch?v=oRAipiWWIDg)
 
 
 # **Conclusion**
