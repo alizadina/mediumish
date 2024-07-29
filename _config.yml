@@ -86,8 +86,8 @@ authors:
       description: "DevOps engineer at Platformatory specializing in Site Reliability Engineering (SRE) and Infrastructure."
   Arun:
       name: Arun B Bhat
-      dispaly_name: Arun B Bhat
-      avatar: 'assets/images/Arun.png'
+      display_name: Arun B Bhat
+      avatar: 'assets/images/arun.png'
       gravatar: b1cc14991db7a456fcd761680bbc8f81
       email: arun@platformatory.io
       web: https://www.platformatory.io

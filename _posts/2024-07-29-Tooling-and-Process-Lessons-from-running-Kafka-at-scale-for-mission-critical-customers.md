@@ -3,7 +3,9 @@ layout: post
 title:  "Tooling and Process: Lessons from running Kafka at scale for mission critical customers"
 categories: [Apache Kafka, Mission-Critical Applications, High Availability Systems, Cluster Management, Performance Optimization, Operational Challenges, Kafka at Scale, SRE Practices, ]
 teaser: Dive into our journey of deploying Apache Kafka at scale for fintech clients, navigating challenges and implementing solutions for mission-critical success
-author: Arun
+authors: Arun
+featured: false
+hidden: false
 image: assets/blog-images/running-kafka-at-scale/kafka.png
 toc: true
 ---
@@ -213,7 +215,7 @@ Here is a demo of [Kafka-CP-Log-Monitor](https://www.youtube.com/watch?v=rWhrKLZ
 
 The implementation of "kafka-cp-jmx-monitor" gave us a comprehensive understanding of the cluster's operational health, enabling us to predict and address potential issues before they escalated into significant problems. By visualizing trends and patterns in Kafka's performance, we gained valuable insights for capacity planning and resource allocation. Additionally, we configured alerts to detect anomalies at both the cluster and individual node levels, allowing us to avoid many major potential issues and drastically reduce the occurrence of problems across the cluster.
 
-Here is a small demo of [Kafka-cp-jmx-dashboard](https://www.youtube.com/watch?v=1Mr2iy2RkA8).
+Here is a demo of [Kafka-cp-jmx-dashboard](https://www.youtube.com/watch?v=1Mr2iy2RkA8).
 
 [![Kafka-cp-jmx-Monitor](../assets/blog-images/running-kafka-at-scale/jmxmonitor.png)](https://www.youtube.com/watch?v=1Mr2iy2RkA8)
 
