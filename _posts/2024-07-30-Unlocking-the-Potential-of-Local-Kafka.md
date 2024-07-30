@@ -6,15 +6,9 @@ teaser: Unlock the full potential of local Kafka setups for rapid development, t
 authors: Subramanya
 featured: false
 hidden: false
-image: assets/blog-images/Unlocking-the-Potential-of-Local-Kafka/Blog_image.png
+image: /assets/blog-images/Unlocking-the-Potential-of-Local-Kafka/Blog_image.png
 toc: true
 ---
-
-# **Unlocking The Potential of Local Kafka**
-
-
-
-![image1](../assets/blog-images/Unlocking-the-Potential-of-Local-Kafka/Title_image.png)
 
 
 # Introduction
@@ -79,12 +73,12 @@ Manual Installation and Installation via Package Managers are relatively the sam
 Hence Docker Compose’s ability to provide a consistent setup across different machines, along with powerful tools for monitoring and troubleshooting, makes it the ideal solution for running Kafka locally.
 
 
-# So how do you make use of a Local kafka Setup…?
+# So how do you make use of a Local kafka Setup?
 
 At Platformatory, we leverage Kafka Sandbox which is setup locally and use it for testing and troubleshooting processes. The Kafka sandbox is an isolated environment mimicking a cloud setup using  a docker-compose setup, along with Prometheus and Grafana deployed for observability and debugging there by achieving all these without the overhead of cloud infrastructure. 
 
 
-## What are the benefits of using the Sandbox…?
+## What are the benefits of using the Sandbox?
 
 **Realistic Testing and Performance Tuning:** The benefit of having a setup similar to Production Environment is you can accurately simulate how Kafka and associated services will behave under real-world conditions to a certain degree and Potential issues and bugs can be identified and resolved before they impact the production environment.
 
