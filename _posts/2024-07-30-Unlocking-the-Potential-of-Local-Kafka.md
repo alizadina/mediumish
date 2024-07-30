@@ -14,7 +14,7 @@ toc: true
 
 
 
-![image1](../asstes/blog-images/Unlocking-the-Potential-of-Local-Kafka/Title_image.png)
+![image1](../assets/blog-images/Unlocking-the-Potential-of-Local-Kafka/Title_image.png)
 
 
 # Introduction
