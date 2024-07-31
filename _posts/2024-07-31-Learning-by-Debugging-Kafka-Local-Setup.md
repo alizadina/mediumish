@@ -337,11 +337,15 @@ ssh root@zookeeper1
 
 Install the Confluent Platform playbook:
 
+Run the below command inside the Ansible Control Node Container
+
+```bash
 ansible-playbook confluent.platform.all
+```
 
 This assumes the inventory file is located at /ansible/inventories/ansible-inventory.yml.
 
-The ansible-inventory file located in the Inventory file in the repository and below is the inventory script for setting up the cluster.
+Below is the inventory script for setting up the cluster.
 
 ```yaml
 ---
