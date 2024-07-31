@@ -2,9 +2,9 @@
 layout: post
 title:  "Authentication to Confluent Cloud Using OAuth/OIDC with Auth0 as Identity Provider"
 categories: [Kafka Architecture, Distributed Systems, Security]
-teaser: 
 author: Vikhyat
-image: 
+teaser: Unlock the power of secure authentication and authorization by integrating Auth0 with Confluent Cloud. In this guide, we'll walk you through configuring OAuth 2.0 and OIDC, ensuring a seamless and secure login experience for your Kafka clusters. Whether you're looking to streamline user management or enhance security, this step-by-step tutorial has you covered.
+image: assets/blog-images/auth0-integration_blog/Web_Photo_Editor.jpg
 toc: true
 ---
 
@@ -15,7 +15,7 @@ In the early days of the internet, sharing information between services was stra
 The popularity of OAuth and OIDC for authentication and authorization says a lot about the importance of the technology. If you see a login page online on a modern website, it is most likely configured using OAuth 2.0 and OpenID Connect (OIDC). These protocols have become the standard for secure, robust authentication and authorization across various applications and services.
 
 
-#### The Problem with Sharing Credentials<a id="the-problem-with-sharing-credentials"></a>
+## The Problem with Sharing Credentials<a id="the-problem-with-sharing-credentials"></a>
 
 Back in the day, if you wanted a service to access your information on another platform, you had to share your username and password. This practice was insecure for several reasons:
 
@@ -67,8 +67,7 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    1. You can see a Create Application button on the getting started page as shows in this picture or alternatively you can go to the application section on the left side of the screen and create an application from there
 
-    <!-- ![Image2](../assets/blog-images/auth0-integration_blog/Gettting-started.png) -->
-    <img src="../assets/blog-images/auth0-integration_blog/Gettting-started.png" alt="Image2" width="800"/>
+      <img src="../assets/blog-images/auth0-integration_blog/Gettting-started.png" alt="Image2" width="800"/>
 
 2. Both options should land you in this page where you give your application details. Here you give your application name, and select Machine to Machine under application type. 
 
@@ -86,7 +85,7 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    1. In the application settings, take note of the Client ID and Client Secret.
 
-    <img src="../assets/blog-images/auth0-integration_blog/Application-settings.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/Application-settings.png" alt="Image5" width="800"/> 
 
 
 #### 2. Configure Auth0 as an Identity Provider in Confluent Cloud<a id="2-configure-auth0-as-an-identity-provider-in-confluent-cloud"></a>
@@ -101,7 +100,7 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    2. Navigate to the Workload Identities tab
 
-    <img src="../assets/blog-images/auth0-integration_blog/Accounts-and-access.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/Accounts-and-access.png" alt="Image6" width="800"/> 
 
 3. ##### Add a New Identity Provider:<a id="add-a-new-identity-provider"></a>
 
@@ -109,13 +108,13 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    2. Choose Other OIDC Provider as the provider type.
 
-    <img src="../assets/blog-images/auth0-integration_blog/Identity-provider.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/Identity-provider.png" alt="Image7" width="700"/> 
 
 4. ##### Fill in the Identity Provider Details:<a id="fill-in-the-identity-provider-details"></a>
 
    1. Fill in the Name, Description, OIDC Discovery URL, Issuer URI, JWKS URI as shown in the picture below.
 
-    <img src="../assets/blog-images/auth0-integration_blog/Identity-provider2.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/Identity-provider2.png" alt="Image8" width="800"/> 
 
 2. You might be wondering where to find these details. Well, the OIDC Discovery URL can be found under your application settings mentioned as Domain
 
@@ -123,7 +122,7 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    1. In my case, it looks something like the image shown below
 
-    <img src="../assets/blog-images/auth0-integration_blog/openid-configuration.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/openid-configuration.png" alt="Image9" width="800"/> 
 
 4. Once this is filled, click on Validate and Save
 
@@ -131,39 +130,24 @@ In this blog post, we will walk through the steps of configuring Auth0 as an ide
 
    1. Once the Identity provider is created, we need to create an Identity pool. Cick on Add Identity Pool button as shown below
 
-    <img src="../assets/blog-images/auth0-integration_blog/Auth0-Idp.png" alt="Image4" width="800"/> 
+      <img src="../assets/blog-images/auth0-integration_blog/Auth0-Idp.png" alt="Image10" width="800"/> 
 
-<!-- 2. Fill in the details as per your requirement. I have filled it as shown in the picture. -->
+   2. Fill in the details as per your requirement. I have filled it as shown in the picture.
 
-<p>
-  <img src="../assets/blog-images/auth0-integration_blog/Identity-pool.png" alt="Description" width="400" style="float: right; margin-left: 40px; margin-right: 650px;" />
+      <img src="../assets/blog-images/auth0-integration_blog/Identity-pool.png" alt="Image11" width="400"/>
   
-  2. Fill in the details as per your requirement. I have filled it as shown in the picture.
-  
-  3. You can use an identity pool to provide granular control over access of your applications to your Confluent Cloud resources. An identity pool is a group of external application identities that are assigned a certain level of access based on a claims-based policy
+   3. You can use an identity pool to provide granular control over access of your applications to your Confluent Cloud resources. An identity pool is a group of external application identities that are assigned a certain level of access based on a claims-based policy
   
         For details on identity pool and how to use it, Check out [Use Identity Pools with Your OAuth/OIDC Identity Provider on Confluent Cloud](https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/identity-providers/oauth/identity-pools.html#add-oauth-identity-pools).
 
 
-  4. Click next once you are done with populating the fields.
-</p>
+   4. Click next once you are done with populating the fields.
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+   5. Since we are creating everything from scratch we will select Add new permissions as shown below and hit next.
 
-  5. Since we are creating everything from scratch we will select Add new permissions as shown below and hit next.
+      ![Image6](../assets/blog-images/auth0-integration_blog/Identity-pool2.png)
 
-  <img src="../assets/blog-images/auth0-integration_blog/Identity-pool2.png" alt="Image4" width="500"/> 
-  
-
-
-  6) On the next page, select the cluster you want to and give the permissions required and finish the setup.
+   6. On the next page, select the cluster you want to and give the permissions required and finish the setup.
 
 #### 3. Configuring Kafka Client<a id="3-configuring-kafka-client"></a>
 
