@@ -80,16 +80,14 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  aarch64-linux
   aarch64-linux-android
   aarch64-linux-musl
-  arm-linux
   arm-linux
   arm-linux-androideabi
   arm-linux-musl
   arm-linux-musleabihf
   arm64-darwin
-  x86-linux
+  ruby
   x86-linux
   x86-linux-android
   x86-linux-musl
@@ -108,4 +106,4 @@ DEPENDENCIES
   rouge
 
 BUNDLED WITH
-   2.4.20
+   2.4.22
