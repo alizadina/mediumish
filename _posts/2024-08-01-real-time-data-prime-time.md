@@ -15,7 +15,7 @@ The speed of light in vacuum, according to [general relativity](https://en.wikip
 
 This includes computing as well. CPU clock speeds, flipping bits in memory, writing to and reading from storage, and transferring bytes over a network all take time.
 
-So what does it mean to build “real-time” architectures within this reality? On one hand, you have [hard real-time operating systems](https://en.wikipedia.org/wiki/Real-time_operating_system) that must provide "hard" real-time guarantees, preemption and deterministic behaviour in extremely low latency bounds. These rely on hardware interrupts. For everything else, we rely on the [kernel scheduler](https://en.wikipedia.org/wiki/Scheduling_(computing)).
+So what does it mean to build “real-time” architectures within this reality? On one hand, you have [hard real-time operating systems](https://en.wikipedia.org/wiki/Real-time_operating_system) that must provide "hard" real-time guarantees, preemption and deterministic behavior in extremely low latency bounds. These rely on hardware interrupts. For everything else, we rely on the [kernel scheduler](https://en.wikipedia.org/wiki/Scheduling_(computing)).
 
 For our purposes: real-time data basically refers to architectures that rely on data freshness, of the order of milliseconds to a few seconds of latency, at the inner loop of some process. While this metaphor is prevalent in many industries, such as for example Industrial IoT, where it is crucial to detect imminent system failures that can cascade in the order of a few seconds, it is also present prominently in various touch points of customer experience in the "human plane", such as a being able to prevent fraud or provide a real-time, hyper local offer. 
 
@@ -59,9 +59,9 @@ flowchart TB
     dashboard -->|Views Reports| ceo[CEO]
 </div>    
 
-This outlines a “conventional” batch-oriented data architecture, which fundamentally acts upon data stored at rest. However, they generally follow "reload and recompute" everything semantics and therefore large latency penalities to access the storage layer, then load everything into memory, process the results and writing it back. 
+This outlines a “conventional” batch-oriented data architecture, which fundamentally acts upon data stored at rest. However, they generally follow "reload and recompute" everything semantics and therefore large latency penalties to access the storage layer, then load everything into memory, process the results and write it back. 
 
-This begs the question: Why isn't incremental processing on data as it arrives the right thing to do? The answer is, yes (but is it worth it?). It comes with a lot of nuances, that arise out of different notions of time domain processing, consistency models ("procesing semantics") and xpectations on completeness & correctness. Combined with all [fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing), and the fact that we are acting upon unbounded data and finite computing resources. We have to process decisions based on a snapshot of “what we know now,” knowing that we may not have the full information.
+This begs the question: Why isn't incremental processing on data as it arrives the right thing to do? The answer is, yes (but is it worth it?). It comes with a lot of nuances that arise out of different notions of time domain processing, consistency models ("processing semantics") and expectations on completeness & correctness. Combined with all [fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing), and the fact that we are acting upon unbounded data and finite computing resources. We have to process decisions based on a snapshot of “what we know now,” knowing that we may not have the full information.
 
 Since we're throwing physics metaphors in the post: Batch vs Streaming is a little like classical mechanics and quantum mechanics.
 
@@ -69,9 +69,9 @@ Since we're throwing physics metaphors in the post: Batch vs Streaming is a litt
 
 ## Components for a Lower Latency, Real-time Stack
 
-Based on everything we know in 2024, let's explore the emergint real-time platform stack and analyze them from a standpoint of characteristic latency profiles.
+Based on everything we know in 2024, let's explore the emerging real-time platform stack and analyze them from a standpoint of characteristic latency profiles.
 
-When we talk through latency numbers here, we almost always refer to “ballpark” numbers on real-life workloads profiles. We will also specially qualify “end-to-end” latency, which is a summation measure across multiple legs of a single logical pipeline of data, across the operational <-> analytics divide. We also assume non-specialized workloads: i.e., moderate throughputs, high availability, strong needs for consistency and correctness, and ordinary infrastructure you can afford on the cloud. Tail latency is the most important consideration, so you can generally assume we are referring to p99 out here both for reads and writes. Based on this, we can identify atleast 7 crucial classes of components you would typically require to build a fit-to-purpose architecture for real-time use-cases
+When we talk through latency numbers here, we almost always refer to “ballpark” numbers on real-life workloads profiles. We will also specially qualify “end-to-end” latency, which is a summation measure across multiple legs of a single logical pipeline of data, across the operational <-> analytics divide. We also assume non-specialized workloads: i.e., moderate throughputs, high availability, strong needs for consistency and correctness, and ordinary infrastructure you can afford on the cloud. Tail latency is the most important consideration, so you can generally assume we are referring to p99 out here both for reads and writes. Based on this, we can identify at least 7 crucial classes of components you would typically require to build a fit-to-purpose architecture for real-time use-cases
 
 ### (1) Real-time Databases
 
@@ -123,7 +123,7 @@ TL/DR
 > * In-memory databases provide sub millisecond latencies consistently (but poor durability). Embeddable in-process databases like RocksDB spill to disk (therefore durable at only marginal latency cost) but require users to implemement many features themselves
 > * You must think about how to transmit changes to real-time. Ideally, a dual-write to a system like Kafka, within the database transaction boundary OR through approaches like CDC
 
-### (2) Kafka (and Kafka Connectors)
+### (2) Streaming Pipes and Connectors
 
 We mentioned inevitably gets copied and moved around a lot. While the write-aside approach works, often it is infeasible due to organizational constraints and architecture deficit. This almost always necessitates the need for a connector layer to move data around from one system to another. While this can be done through point to point copies, it is unreasonably effective to plug in a large persistent buffer like Kafka that optimizes for low latency, high throughput ingestion (even for very bursty workloads) and high fan-out. This also means that connector architectures that rely on top of Kafka have a lot of advantages, such as being able to fence data movement into transactions, retry and generally insulate against unavailability of systems that are in the pipeline.
 
@@ -188,8 +188,6 @@ sequenceDiagram
     SinkProcessor->>Kafka: Commit
 </div>
 
-### Flink Parallel Data Flow Topology with Key Group Split
-
 <div class="mermaid" style="display:flex; justify-content:center">
 graph TD
     A[Kafka Source] --> B[KeyBy Function]
@@ -212,9 +210,7 @@ graph TD
     F --> G[Kafka Sink]
 </div>
 
-Streaming databases are designed to handle continuous streams of data with a focus on real-time storage, querying, and processing. Unlike stream processing frameworks that provide granular control over data flow and transformations, streaming databases emphasize storage and a query interface as their primary functionalities. This allows users to run complex queries on the data as it flows through the system, often combining both historical and real-time data in their analyses.
-
-For example, the Timely Dataflow Model, based on NAIAD, emphasizes the coordination of data processing across distributed systems. It introduces the concept of epochs and progress tracking, enabling efficient and scalable data processing. The timely dataflow model supports both cyclic and acyclic data flows, making it versatile for various streaming applications.
+Streaming databases and stream processing systems do very similar things. One would be inclined to think that streaming databases as syntactic sugar on top of stream processing systems, however this would be very inaccurate. Streaming databases are much more akin to databases, take on state (and persistence) as a first class concern, while completely insulating users from low level APIs used for managing dataflow. For instance, the Timely Dataflow Model, based on NAIAD, emphasizes the coordination of data processing across distributed systems. It introduces the concept of epochs and progress tracking, enabling efficient and scalable data processing. The timely dataflow model supports both cyclic and acyclic data flows, making it versatile for various streaming applications. This is starkly in contrast to DAG based topologies common in stream processing systems. Streaming databases have very solid fundamentals and could easily become relevant for 80% of stream processing use-cases without the complexity of large systems like Flink, Spark (or even libraries like KStreams for that matter).
 
 TL/DR
 
@@ -260,14 +256,19 @@ TL/DR:
 
 ### (5) The Data Lakehouse
 
-The Lakehouse architecture combines elements of data lakes and data warehouses, aiming to provide the scalability and flexibility of data lakes with the performance and reliability of data warehouses. However, because Lakehouses fundamentally rely on object storage systems like S3 for their storage layer, they are typically slower compared to real-time OLAP systems. The latency of these systems is primarily influenced by the performance of the underlying object storage.
+Distributed file systems have been at the backbone of every large scale data architecture over the years. The cloud native era has seen S3 emergency at the core of nearly every data system that desires compute and storage decoupling, including lakes, warehouses, a streaming API like Kafka itself and even transactional databases.
 
+The recent years have seen the coalescence of lakes and warehouses, mainly owing to two important factors
 
-To manage and optimize data stored in object storage, Lakehouses often use open table formats like Apache Hudi, Apache Iceberg, and Apache Paimon. These formats provide features such as ACID transactions, schema evolution, and efficient data management, improving the suitability of Lakehouses for streaming workloads.
+Commodification of open table formats on top of columnar storage formats
+Commodification of robust vectorized query execution, predicate pushdowns through open query engines.
 
-Apache Hudi is designed to handle large-scale data ingestion and offer efficient upsert operations. It is suitable for incremental processing and managing late-arriving data. Apache Iceberg focuses on handling large analytic datasets with support for complex data transformations and schema evolution. It is optimized for read-heavy workloads. Apache Paimon provides similar capabilities to Hudi and Iceberg, with a focus on streaming data and supporting real-time analytics.
+While that has been the case, their utility in mainstream “streaming” applications has been relatively low because of prohibitively high latencies on the storage layer (which generally prefers larger files than smaller files) and some structural reasons of the table format themselves. For example, Apache Iceberg, the leading open table formats has major deficiencies with streaming workloads.
 
-Query engines in Lakehouse architectures are designed to perform efficient data retrieval and analysis. They include features such as predicate pushdowns, indexing, and caching to minimize data scanning and improve query performance. Predicate pushdowns push filtering operations as close to the storage layer as possible to reduce the amount of data scanned and processed. Indexes speed up data retrieval by quickly locating the necessary data without scanning the entire dataset. Caching frequently accessed data reduces read latency and improves query response times.
+However, this is fast changing due to a couple of factors
+
+The emergence of better table formats, such as Apache Hudi and Apache Paimon. Hudi’s Merge on read (MOR) tables are very efficient for streaming ingestion, supports CDC connectors natively, along with schema evolution and deep integrations with processing system. Apache Paimon, which is Flink’s table format, provides some very efficient LSM reuse optimisations and deep integrations with Flink itself makes lakehouse architectures reach closer to the latencies desired, but at much cheaper costs
+Object stores are themselves getting faster (and will keep getting faster). This means there may be times in the future where they may just become viable for a new world order of data architectures.
 
 <div class="mermaid" style="display:flex; justify-content:center">
 graph TD
@@ -281,42 +282,31 @@ graph TD
     C -->|Schema Evolution| D
 </div>
 
-Lakehouse architectures offer a unified platform for data storage and analytics by combining the benefits of data lakes and data warehouses. While they provide scalability and cost-efficiency, their reliance on object storage systems like S3 can introduce significant latency. Open table formats such as Apache Hudi, Apache Iceberg, and Apache Paimon help optimize data management and improve suitability for streaming workloads. By leveraging features like predicate pushdowns, indexing, and caching, query engines in Lakehouse architectures strive to minimize latency and enhance query performance, although they remain slower than real-time OLAP systems due to the inherent characteristics of object storage.
+It is inevitable that any architecture that that could benefit from compute-storage separation, geo resillence and cost optimization will build on top of object stores like S3.
 
 TL/DR
 
 > * Lakehouses can easily provide a unified processing and storage layer for most moderate to high latency workloads that need a streaming foundation: Particularly use-cases such as CDC
-> * When done well, streaming lakehouses can fill the large voin between RTOLAP and traditional lakes and warehouses. It is viable to achieve near-time streaming pipelines with an end to end latency of several seconds to several minutes
+> * When done well, streaming lakehouses can fill the large void between RTOLAP and traditional lakes and warehouses. It is viable to achieve near-time streaming pipelines with an end to end latency of several seconds to several minutes
 > * Not all table formats are equal. While the incumbent table formats largely lean towards traditional batch workloads, some emerging ones provide a solid foundation for streaming
-> * As cloud obect storage gets faster (ex: S3 Express 1Z), viability of lakehouses fit for streaming workloads will only get better
+> * As cloud object storage gets faster (ex: S3 Express 1Z), viability of lakehouses for streaming workloads will only get better
 
 
-### (6) Bolt-ons for AI/ML 
+### (6) Real-time ML (and datastore bolt-ons)
 
-In the AI/ML era, the criticality of real-time data cannot be overstated. Machine learning models often rely on fresh data to make accurate predictions, necessitating the use of real-time (small sliding window) features. This requires specialized infrastructure such as feature stores, time series databases, vector stores, low latency ML inference layers, and operational real-time databases for caching.
+For a burgeoning data estate with these 5 essentials started out, the more futuristic possibilities of leveraging real-time data are in the AI/ML (including Gen AI space). This necessitates the application of both generic and specialized data stores. For example, time series databases excel at aggregation of data at extremely low latencies on high volume time-series data. Feature stores are emerging as a system of record for managing ML features and reference data, for both online and offline serving as an integrated concern (with low latency). Interest in vector databases, a class of databases that mainly excel at large scale similarity searches, has seen a huge surge mainly due to the advent of GenAI approaches such as RAG, which require context hydration to the LLM at inference time.
 
-Real-time features are essential for machine learning models to perform well in dynamic environments. Feature stores are specialized systems designed to manage and serve machine learning features in real-time. They allow for the efficient retrieval of features needed for both training and inference, ensuring that models have access to the most up-to-date data. By maintaining a consistent set of features, feature stores help in reducing the latency and complexity associated with feature engineering.
-
-
-Time series databases are crucial for handling time-stamped data, which is common in many AI/ML applications. These databases are optimized for the storage and retrieval of time series data, providing efficient querying capabilities for data that changes over time. Examples include InfluxDB, TimescaleDB, and Prometheus, which offer high write and query performance, making them suitable for real-time analytics and monitoring.
-
-
-Vector stores are becoming increasingly important with the rise of applications like Retrieval-Augmented Generation (RAG). These stores are designed to handle high-dimensional vector data, which is used in various AI/ML applications, including natural language processing and recommendation systems. Vector databases like Pinecone, Milvus, and Weaviate provide capabilities for storing, indexing, and querying vector data efficiently, enabling fast similarity searches and real-time AI applications.
-
-
-
-Low latency ML inference is another critical component in real-time AI/ML systems. This often involves deploying machine learning models close to the data source or at the edge to reduce the time it takes to make predictions. API gateways can be used to manage and route inference requests, ensuring that models can serve predictions with minimal latency. This setup is particularly important for applications that require instantaneous responses, such as fraud detection, recommendation systems, and autonomous systems.
-
-
-
-Finally, operational real-time databases like Aerospike, Redis, or Memcached can be used as caches to further reduce latency in AI/ML systems. These databases provide fast read and write access to frequently used data, ensuring that machine learning models can quickly access the features and historical data they need for inference. By caching critical data, these systems help to minimize the delay in data retrieval, enhancing the overall performance of real-time AI/ML applications.
-
-These AI/ML bolt-ons are crucial for building robust real-time machine learning systems. By leveraging feature stores, time series databases, vector stores, low latency inference layers, and operational real-time databases, organizations can ensure their models are both accurate and responsive, capable of making predictions in real-time with minimal latency.
+While these parts of the stack have been assembled bespoke in the ML niche often on single purpose products, there is a clear potential for unifying and standardizing various parts of the ML platform and Operations stack. The primary concern being, optimizing for inference latency, with models augmented by the freshest data that is available. The final frontier is to enable smarter model operations with continual and incremental learning (a function of both retraining and fine-tuning frequency), while being able to put in controls on evaluation, taming model drift 
 
 TL/DR
 
-> * 
+> * Latency Profile: Online feature stores optimize for latencies profiles of the order of milliseconds for serving up real-time features in the path of inference. This usually means that the feature store uses something akin to a Redis, Aerospike or Cassandra. This also needs to be coupled with a robust model serving / API layer and caching. 
+> * Vector stores also fall in the same range, but latencies usually fluctuate as a function of the distance metric and the number of vector dimensions. LLM chains and RAG pipelines must consider vector databases in the path as the additional overhead that needs to be optimized.
+> * Continual learning is still an area of novelty, coupled with many challenges of explainability and model evaluation, but will emerge as an area, likely building on top of abstractions like 
 
 ### Conclusion
 
-Optimizing for latency is pretty difficult. Ubiquitous firehose interfaces like Kafka form the lowest common denominaotr of distribution and logistical layer for buidling real-time experiences that span across the operational, analytical divide. However, these need to be combined with a larger stack to process, materialize, query and manage the streaming estate.
+Optimizing for latency is hard. Ubiquitous firehose interfaces like Kafka form the lowest common denominator of the distribution and in-motion logistics needed to build real-time experiences that span across the operational, analytical divide. However, these need to be combined with a best in breed stack to process, materialize, query and manage the streaming estate.
+
+
+
