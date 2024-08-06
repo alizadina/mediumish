@@ -4,7 +4,8 @@ title: "How to turn your legacy architecture to an event-driven system"
 authors: avinash
 categories: [Event-Driven Architecture, Kafka, Eventing, command processing, real-time, event driven workflows, saas]
 image: assets/blog-images/eventception/EventDrivenArchitectureAbstract.jpeg
-featured: false
+featured: true
+hidden: true
 teaser: Convert an existsing request-response architecture into an event-driven architecture with little to no code changes.
 ---
 
