@@ -5,8 +5,9 @@ categories: [ Platform Engineering, Real-time, Stream Processing, Kafka ]
 image: assets/blog-images/real-time-primetime/real-time-primetime.webp
 featured: true
 hidden: true
-teaser: How to make your data estate real-time
+teaser: How to build intelligent applications and platforms to process data within seconds.
 toc: true
+weight: -11
 title: Real-time Data on Prime-Time
 ---
 
@@ -296,7 +297,7 @@ TL/DR
 
 For a burgeoning data estate with these 5 essentials started out, the more futuristic possibilities of leveraging real-time data are in the AI/ML (including Gen AI space). This necessitates the application of both generic and specialized data stores. For example, time series databases excel at aggregation of data at extremely low latencies on high volume time-series data. Feature stores are emerging as a system of record for managing ML features and reference data, for both online and offline serving as an integrated concern (with low latency). Interest in vector databases, a class of databases that mainly excel at large scale similarity searches, has seen a huge surge mainly due to the advent of GenAI approaches such as RAG, which require context hydration to the LLM at inference time.
 
-While these parts of the stack have been assembled bespoke in the ML niche often on single purpose products, there is a clear potential for unifying and standardizing various parts of the ML platform and Operations stack. The primary concern being, optimizing for inference latency, with models augmented by the freshest data that is available. The final frontier is to enable smarter model operations with continual and incremental learning (a function of both retraining and fine-tuning frequency), while being able to put in controls on evaluation, taming model drift 
+While these parts of the stack have been assembled bespoke in the ML niche often on single purpose products, there is a clear potential for unifying and standardizing various parts of the ML platform and Operations stack. The primary concern being, optimizing for inference latency, with models augmented by the freshest data that is available. The final frontier is to enable smarter model operations with continual and incremental learning (a function of both retraining and fine-tuning frequency), while being able to put in controls on evaluation and taming model drift. 
 
 TL/DR
 
