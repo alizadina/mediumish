@@ -258,17 +258,17 @@ TL/DR:
 
 Distributed file systems have been at the backbone of every large scale data architecture over the years. The cloud native era has seen S3 emergency at the core of nearly every data system that desires compute and storage decoupling, including lakes, warehouses, a streaming API like Kafka itself and even transactional databases.
 
-The recent years have seen the coalescence of lakes and warehouses, mainly owing to two important factors
+The recent years have seen the coalescence of lakes and warehouses, mainly owing to two important factors, namely the commodification of:
 
-Commodification of open table formats on top of columnar storage formats
-Commodification of robust vectorized query execution, predicate pushdowns through open query engines.
+* Open table formats on top of columnar storage formats
+* Query Engones: Robust vectorized query execution, predicate pushdowns, etc
 
 While that has been the case, their utility in mainstream “streaming” applications has been relatively low because of prohibitively high latencies on the storage layer (which generally prefers larger files than smaller files) and some structural reasons of the table format themselves. For example, Apache Iceberg, the leading open table formats has major deficiencies with streaming workloads.
 
 However, this is fast changing due to a couple of factors
 
-The emergence of better table formats, such as Apache Hudi and Apache Paimon. Hudi’s Merge on read (MOR) tables are very efficient for streaming ingestion, supports CDC connectors natively, along with schema evolution and deep integrations with processing system. Apache Paimon, which is Flink’s table format, provides some very efficient LSM reuse optimisations and deep integrations with Flink itself makes lakehouse architectures reach closer to the latencies desired, but at much cheaper costs
-Object stores are themselves getting faster (and will keep getting faster). This means there may be times in the future where they may just become viable for a new world order of data architectures.
+* The emergence of next-gen formats, such as Apache Hudi and Apache Paimon. Hudi’s Merge on read (MOR) tables are very efficient for streaming ingestion, supports CDC connectors natively, along with schema evolution and deep integrations with processing system. Apache Paimon, which is Flink’s table format, provides some very efficient LSM reuse optimisations and deep integrations with Flink itself makes lakehouse architectures reach closer to the latencies desired, but at much cheaper costs
+* Object stores are themselves getting faster (and will keep getting faster). This means there may be times in the future where they may just become viable for a new world order of data architectures.
 
 <div class="mermaid" style="display:flex; justify-content:center">
 graph TD
