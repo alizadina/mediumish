@@ -25,11 +25,13 @@ Here, we delve into the roles of Dev, Pre-Prod, DR and Production Environments w
 ![architecture.png](../assets/blog-images/running-kafka-at-scale/architecture.png)
 
 
+
 ### **Dev Environment**
 
 The Dev environment is where developers experiment with new ideas, write code, and test features in isolation. It provides a sandbox for innovation without affecting production or PreProd environments.
 
 **CI/CD Pipeline Integration:** Any changes, such as version upgrades or new configurations, should first be applied in the Dev environment. Here, they undergo initial testing and validation to ensure they don’t introduce any issues. This process should be managed through an automated CI/CD pipeline that ensures consistency and speed.
+
 
 
 ### **PreProd Environment**
@@ -45,6 +47,7 @@ The DR environment is a backup setup designed to mirror the production environme
 
 The DR environment utilizes Kafka's MirrorMaker2/Cluster linking or other replication tools to synchronize data between the production and DR clusters. It is designed to quickly assume production workloads with minimal downtime, ensuring that business processes remain uninterrupted.
 
+
 **CI/CD Pipeline Integration**: Once the changes have been thoroughly tested in the PreProd environment, the CI/CD pipeline automatically deploys them to the DR environment. This ensures that the DR setup is always in sync with production and ready to take over if needed.
 
 
@@ -53,6 +56,7 @@ The DR environment utilizes Kafka's MirrorMaker2/Cluster linking or other replic
 The production environment is the live setting where Kafka processes real-time data for business operations. It must handle high throughput, low latency, and provide seamless data streaming capabilities to support mission-critical applications.
 
 While environments provide the framework for Kafka deployments, it is important to recognize potential pitfalls within a Kafka cluster that can impact its performance and reliability.
+
 
 **CI/CD Pipeline Integration**: After passing all previous stages, the changes are finally deployed to the Production environment through the CI/CD pipeline. This controlled, step-by-step deployment process minimizes risks and ensures that the production environment remains stable and reliable.
 
@@ -63,6 +67,7 @@ Establishing the appropriate Kafka infrastructure is one thing, but ensuring its
 
 
 ### **Network**
+
 
 Network issues can significantly impact the performance and stability of a Kafka cluster. Here are some specific network related problems that might arise:
 
@@ -184,6 +189,7 @@ Metrics like _Kafka_consumer_consumer_coordinator_metrics_rebalancetime_max_ can
 
 ### **Implementing CI/CD Architecture for Kafka Cluster Management**
 
+
 Establishing a CI/CD architecture for Kafka cluster management is crucial for seamless upgrades and rollbacks. Version control is vital for managing Kafka configurations and ensuring consistency across environments. By centralizing essential Kafka files in a repository, you can streamline the upgrade process and reduce the risk of configuration drift.
 
 For instance, if Kafka is installed using Ansible, having the Ansible playbook readily available is critical for understanding the cluster's setup and applying patches or upgrades in the future. A CI/CD pipeline using tools like Jenkins, Ansible can automate the deployment process, making it more efficient and less error-prone. This approach ensures that changes are tested, approved, and applied consistently across environments.
@@ -294,12 +300,14 @@ The tool’s trend analysis and visualization capabilities aid in effective capa
 
 #### **Proactive Issue Detection**
 
+
 Advanced alerting features help in detecting anomalies at both the cluster and individual node levels, drastically reducing the occurrence of major issues and improving overall cluster stability.
 
 Here is a demo of [Kafka-cp-jmx-dashboard](https://www.youtube.com/watch?v=1Mr2iy2RkA8).
 
 
 ### **Kafka-cp-deploy-manager**
+
 
 “kafka-cp-deploy-manager” automates Kafka cluster lifecycle management, handling version upgrades, configuration changes, and scaling operations seamlessly.
 
