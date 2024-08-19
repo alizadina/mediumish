@@ -340,4 +340,4 @@ Here is a demo of [Kafka-cp-deploy-manager](https://www.youtube.com/watch?v=oRAi
 
 ## **Conclusion:**
 
-Running Kafka at scale for mission-critical applications presents both challenges and opportunities. By mastering the Kafka ecosystem and adhering to best practices in areas such as sizing, tooling, deployment, and performance optimization, organizations can fully leverage Kafka’s potential. Achieving continuous cluster availability is possible through the deployment of custom tooling solutions and dedicated effort. These tools significantly enhance monitoring and management capabilities, contributing to a more efficient and reliable data streaming infrastructure.
+Running Kafka at scale for mission-critical customers is both complex and rewarding. By mastering the Kafka ecosystem and adhering to best practices in sizing, tooling, deployment, and performance optimization, organizations can fully leverage Kafka’s potential. These tools have significantly enhanced our monitoring and management capabilities, contributing to a more efficient and reliable data streaming infrastructure
