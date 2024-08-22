@@ -32,7 +32,7 @@ To fully understand how Temporal's architecture operates, it’s important to fi
 
 **Activities** are discrete units of business logic within your application, designed to perform specific tasks that may be prone to failure, such as interacting with external services or sending emails. Like Workflows, Activities run on your infrastructure and are managed by Temporal to ensure reliability.
 
-**Workers** are processes provided by the Temporal SDK that execute your Workflows and Activities. They act as the bridge between your application logic and the Temporal Server, ensuring that your tasks are performed reliably and in the correct order. Workers constantly communicate with the Temporal Server to coordinate the execution of tasks.
+**Workers** are processes that execute your Workflows and Activities. They act as the bridge between your application logic and the Temporal Server, ensuring that your tasks are performed reliably and in the correct order. Workers constantly communicate with the Temporal Server to coordinate the execution of tasks.
 
 **Temporal SDKs** (Software Development Kits) are open-source collections of tools, libraries, and APIs that enable Temporal Application development. They offer a Temporal Client to interact with the Temporal Service, APIs to develop your Temporal Application, and APIs to run horizontally scalable Workers. Temporal SDKs are available in multiple languages including Go, Java, PHP, Python, TypeScript, and .NET
 
@@ -53,13 +53,10 @@ The Temporal Server is the backbone of the Temporal system. It acts as the super
 **Temporal Cluster**
 
 
-
-* The Temporal Cluster, is a group of services that together act as a component of the Temporal Platform. It includes the Temporal Server, combined with Visibility stores. One of the key components of the Temporal Server is the Frontend Service. The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. It is responsible for rate limiting, authorizing, validating, and routing all inbound calls, including those from the Worker processes
-* The Temporal Cluster is responsible for maintaining the state and progress of your workflows. It ensures that your distributed applications execute durably and consistently [source].
+* The Temporal Cluster is a group of services that together act as a component of the Temporal Platform. It includes the Temporal Server, combined with Visibility stores. One of the key components of the Temporal Server is the Frontend Service. The Frontend Service is a stateless gateway service that exposes a strongly typed API using Protocol Buffers (Protobuf). It is responsible for rate limiting, authorizing, validating, and routing all inbound calls, including those from the Worker processes.
+* The Temporal Cluster is responsible for maintaining the state and progress of your workflows. It ensures that your distributed applications execute durably and consistently.
 *  The History Service within the Temporal Cluster manages individual Workflow Executions, handling RPCs from the User Application and the Temporal Worker, driving the Workflow Execution to completion, and storing all state required for durable execution. 
-
-    The Matching Service within the Temporal Cluster manages the Task Queues being polled by Temporal Worker processes, with a single task queue holding tasks for multiple Workflow Executions.
-
+   The Matching Service within the Temporal Cluster manages the Task Queues being polled by Temporal Worker processes, with a single task queue holding tasks for multiple Workflow Executions.
 * The main clients of the Temporal Cluster are the User Applications and the Temporal Workers. The User Applications use one of the Temporal SDKs to communicate with the Temporal Server to start/cancel workflows, and interact with running workflows. The Temporal Workers execute the Workflow and Activity code and communicate with the Temporal Server.
 *  The User Applications and Temporal Workers communicate with the Temporal Server (part of the Temporal Cluster) using the Temporal SDKs. This communication is done via gRPC, a high-performance, open-source framework for RPC communication. The Worker processes continuously poll the Temporal Server for tasks and send updates back to the server upon task completion.
 
@@ -95,10 +92,8 @@ Here's an example of how Temporal handles a server crash:
 
 1. A Workflow is running and executing Activities.
 2. The server running the Temporal Cluster crashes.
-3. After the Temporal Cluster has stopped, it is restarted.
-4. The Workflow is still listed and running. It picks up where it left off when the server comes back online.
-
-This is possible because Temporal maintains the state of a Workflow Execution even in the face of failures, crashes, or server outages. It uses an Event History to record the state of a Workflow Execution at each step. If a failure occurs, the Workflow Execution can resume from the last recorded event, ensuring that progress isn't lost.
+3. After the Temporal Server (which could be the entire Temporal Cluster if it's a single-server setup) has stopped due to the crash, it is restarted. This could be a manual restart by an operator or an automatic restart by a system supervisor. In a multi-server setup, If one server crashes, the remaining servers in the cluster can continue to operate and maintain the state of the workflows.
+4. The Workflow is still listed and running. It picks up where it left off when the server comes back online. Because when a Temporal server crashes, the state of the workflow is preserved in its history. If a worker is unable to communicate with the server, the workflow doesn't stop. Temporal times out the workflow task and places it back on the task queue. Another worker can then pick up the task and continue the execution by replaying the workflow history to recreate the workflow state.
 
 
 # Developing Workflows and Activities
@@ -240,6 +235,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+
 **Workflow and Activity Tasks**
 
 As the Workflow Execution progresses, the Temporal Cluster schedules and records various events:
@@ -281,7 +277,7 @@ DoorDash employs Temporal for orchestrating its delivery and logistics operation
 
 Box uses Temporal to handle file synchronization and collaborative workflows. Temporal enables Box to manage file uploads, version control, and collaborative editing, providing a scalable and fault-tolerant solution for their document management system.
 
-At Platformatory, we use Temporal for the orchestration of workflows in our Eventception platform. Eventception transforms traditional APIs to an event-driven architecture, enabling seamless integration and scalability without code changes. Temporal is used to provision necessary resources, update resources or delete resources based on user actions on the platform. These typically involves running multiple steps that need to be orchestrated for the end goal. Each user activity involving CUD is translated into 1 or more workflows in Temporal. The workflows are triggered as a response to a Kafka message, thus making it an event driven orchestration. Temporal allows us to manage complex, long-running processes efficiently, with automatic retries, state management, and precise execution tracking, all crucial for maintaining the robustness and reliability of our platform.
+At Platformatory, we use Temporal for the orchestration of workflows in our Eventception platform. Eventception transforms traditional APIs to an event-driven architecture, enabling seamless integration and scalability without code changes. Temporal is used to provision necessary resources, update resources or delete resources based on user actions on the platform. These typically involves running multiple steps that need to be orchestrated for the end goal. Each user activity involving CUD (Create, Update and Delete Operations) is translated into 1 or more workflows in Temporal. The workflows are triggered as a response to a Kafka message, thus making it an event driven orchestration. Temporal allows us to manage complex, long-running processes efficiently, with automatic retries, state management, and precise execution tracking, all crucial for maintaining the robustness and reliability of our platform. To know more about Eventception, check out this video available on youtube [ EventCeption - Reflexive Eventing for Data-driven Application](https://www.youtube.com/watch?v=3NL2ctqglfo).
 
 We also use Temporal Interceptors in our Eventception platform to automatically manage workflow statuses, ensuring consistency and reducing repetitive code across our platform's complex processes. This streamlined approach enhances operational visibility and reliability. If you wish to know more about Temporal Interceptors, make sure to check out our blog post  [Understanding Temporal Interceptors: Enhancing Workflow Management](https://platformatory.io/blog/Understanding-Temporal-Interceptors/).
 
