@@ -78,12 +78,12 @@ authors:
   Shivaprakash:
       name: Shivaprakash Akki
       display_name: Shivaprakash Akki
-      avatar: 'assets/images/avatar.png'
+      avatar: 'assets/images/shiva.png'
       gravatar: b1cc14991db7a456fcd761680bbc8f81
       email: akkishiva@platformatory.com
       web: https://www.platformatory.io
       twitter: https://twitter.com/platformatory
-      description: "DevOps engineer at Platformatory specializing in Site Reliability Engineering (SRE) and Infrastructure."
+      description: "DevOps engineer at Platformatory, specializing in Site Reliability Engineering (SRE) and Infrastructure. This role involves building and managing reliable systems to ensure high performance and smooth operations."
   Arun:
       name: Arun B Bhat
       display_name: Arun B Bhat
@@ -102,8 +102,24 @@ authors:
       web: https://www.platformatory.io
       twitter: https://twitter.com/platformatory
       description: "DevOps engineer at Platformatory specializing in Site Reliability Engineeing and Infrastructure."
-
-
+  Vikhyat:
+      name: Vikhyat Shetty
+      display_name: Vikhyat Shetty
+      avatar: 'assets/images/vikhyat.jpg'
+      gravatar: b1cc14991db7a456fcd761680bbc8f81
+      email: vikhyat@platformatory.com
+      web: https://www.platformatory.io
+      twitter: https://twitter.com/platformatory
+      description: "DevOps/SRE at Platformatory"
+  Zeenia:
+    name: Zeenia
+    display_name: Zeenia Gupta
+    avatar: 'assets/images/girl_avatar.jpg'
+    gravatar: b1cc14991db7a456fcd761680bbc8f81
+    email: zeenia@platformatory.com
+    web: https://www.platformatory.io
+    twitter: https://twitter.com/platformatory
+    description: "DevOps engineer at Platformatory specializing in Site Reliability Engineeing and Infrastructure"
 
 # Plugins
 plugins:
