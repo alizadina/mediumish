@@ -293,12 +293,12 @@ Below is a snapshot of some of the Kafka broker metrics as seen in the Grafana d
 
 
 
-#### **Efficient Capacity Planning**
+##### **Efficient Capacity Planning**
 
 The tool’s trend analysis and visualization capabilities aid in effective capacity planning and resource allocation, ensuring optimal performance and preventing resource shortages.
 
 
-#### **Proactive Issue Detection**
+##### **Proactive Issue Detection**
 
 
 Advanced alerting features help in detecting anomalies at both the cluster and individual node levels, drastically reducing the occurrence of major issues and improving overall cluster stability.
