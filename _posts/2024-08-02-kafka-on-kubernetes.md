@@ -486,11 +486,11 @@ subgraph KC["Kubernetes Cluster"]
 | | CFK    | Strimzi      | KOperator       |
 | :---        | :---        | :---:         | ---:           |
 | **Workload Type** | StatefulSet        | StrimziPodSet         | Pod           |
-|  |         |          |            |
+
 | **CRs supported**|ClusterLink ConfluentRoleBinding Connector Connect ControlCenter KafkaRestClass KafkaRestProxy| Kafka KafkaBridge KafkaConnector KafkaUser KafkaMirrorMaker2 | KafkaCluster KafkaTopic KafkaUser CruiseControlOperation  |
 | **Networking Models**| Loadbalancer NodePort Ingress      | Loadbalancer NodePort Ingress        | Loadbalancer (envoy or Istio ingress) NodePort Ingress         |
 | **Storage** | * Supports Tiered Storage *   | Generic CSI with PVs     | Generic CSI with PVs |
-|  |         |          |            |
+
 
 
 ### **Security**
@@ -505,7 +505,7 @@ subgraph KC["Kubernetes Cluster"]
 | SASL/OAUTHBEARER | No        | Yes         | No           |
 | SASL/GSSAPI | No        | No         | No           |
 | Kubernetes RBAC | No        | No         | Yes with K8S namespaces and SA           |
-|  |         |          |            |
+
 
 
 ### **Authorization**
@@ -514,7 +514,7 @@ subgraph KC["Kubernetes Cluster"]
 | :---        | :---        | :---:         | ---:           |
 | ACL | Yes        | Yes         | Yes with Envoy           |
 | RBAC | Yes        | No         | No           |
-|  |         |          |            |
+
 
 
 ### **Security**
@@ -525,7 +525,7 @@ subgraph KC["Kubernetes Cluster"]
 | Monitoring add-ons | Control Center, Confluent Health+, JMX        | JMX, Cruise Control         | JMX, Cruise Control           |
 | Disaster recovery | Replicator, ClusterLink. Also support Multi-region clusters        | MirrorMaker2         | MirrorMaker2           |
 | Scale up/out | kubectl scale with Self Balancing        | Non-broker components - K8S HPA and KEDA. Broker - Manual scaling with Strimzi Drain Cleaner         | Autoscaling with Cruise Control           |
-|  |         |          |            |
+
 
 
 # Summary
