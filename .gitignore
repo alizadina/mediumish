@@ -1,5 +1,41 @@
-_site
-.DS_Store
-*.swp
-.sass-cache
-*~
+# Jekyll generated site files
+_site/
+.jekyll-cache/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Operating system files
+.DS_Store        # macOS system file
+Thumbs.db        # Windows system file
+ehthumbs.db
+
+# Temporary files
+*.swp            # Vim swap files
+*.swo            # Vim swap files
+*~               # Temporary file created by some editors
+*.bak            # Backup file
+*.tmp            # Temporary file
+*.orig           # Backup file from merge conflicts
+
+# Sass cache
+.sass-cache/
+
+# Node.js dependencies (if using node tools)
+node_modules/
+
+# Ruby dependencies
+.bundle/
+vendor/bundle/
+Gemfile.lock      # Optional, if you don't want to lock gem versions
+
+# IDE-specific files (for common IDEs)
+.idea/           # JetBrains (IntelliJ, WebStorm, etc.)
+.vscode/         # Visual Studio Code
+
+# Environment files (optional, depending on setup)
+.env             # Environment variables
+
+# Additional optional exclusions
+*.lock           # Lock files (if you're working with npm/yarn)
