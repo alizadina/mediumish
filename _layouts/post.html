@@ -7,36 +7,70 @@ post_class: post-template
 
 <!-- Begin Article
 ================================================== -->
-<div class="container">
+<div class="">
     <div class="row">
 
         <!-- Post Share -->
-        <div class="col-md-2 pl-0">
+        <!-- <div class="col-md-2 pl-0 d-none d-md-block">
             {% include share.html %}
+        </div> -->
+        <div class="col-md-2 p-0">
+            <div class="toc-container">     
+                <!-- Toc if any -->
+                {% if page.toc   %}
+                {% if page.beforetoc %}
+                <p><em>{{page.beforetoc}}</em></p>
+                {% endif %}
+                <div class="toc mb-4 lead">
+                    <h3 class="font-weight-bold">Summary</h3>
+                    {% include toc.html html=content %}
+                </div>
+                {% endif %}
+                <!-- End Toc -->
+            </div>
         </div>
-
         <!-- Post -->
         {% assign author = site.authors[page.author] %}
 
-        <div class="col-md-9 flex-first flex-md-unordered">
+        <div class="{% if page.ctas %}col-md-8{% else %} col-md-10 {% endif %}">
             <div class="mainheading">
 
                 <!-- Author Box -->
-                {% if page.author %}
-                <div class="row post-top-meta">
-                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                <!-- {% if page.author %} -->
+                <!-- <h4 class="">Author</h4> -->
+                <!-- <h6 class="">Authored by</h6> -->
+                <!-- <div class="row post-top-meta"> -->
+                <!-- <div class="col-xs-12 text-center text-md-left mb-4 mb-md-0">
                         {% if author.avatar %}
-                        <img class="author-thumb" src="{{site.baseurl}}/{{ author.avatar }}" alt="{{ author.display_name }}">
+                        <img class="author-thumb-top" src="{{site.baseurl}}/{{ author.avatar }}" alt="{{ author.display_name }}">
                         {% else %}
-                        <img class="author-thumb" src="https://www.gravatar.com/avatar/{{ author.gravatar }}?s=250&d=mm&r=x" alt="{{ author.display_name }}">
+                        <img class="author-thumb-top" src="https://www.gravatar.com/avatar/{{ author.gravatar }}?s=250&d=mm&r=x" alt="{{ author.display_name }}">
                         {% endif %}
+                    </div> -->
+
+                <!-- <div class="col-xs-12 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="{{ author.web }}">{{ author.display_name }}</a>
+                    </div> -->
+                <!-- </div> -->
+                <!-- {% endif %} -->
+
+                <!-- {% if page.authors %}
+                {% assign authors = page.authors | split: "," %}
+
+                <h6 class="">Authored by</h6>
+                <div class="d-flex">
+                    {% for author_name in authors %}
+                    {% assign author = site.authors[author_name] %}
+                    {% if author %}
+                    <div class="text-center text-md-left">
+                        <a target="_blank" class="link-dark " href="{{ author.web }}">{{ author.display_name }}{% if
+                            forloop.last == false %},&nbsp;
+                            {% endif %}</a>
                     </div>
-                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
-                        <a target="_blank" class="link-dark" href="{{ author.web }}">{{ author.display_name }}</a><a target="_blank" href="{{ author.twitter }}" class="btn follow">Follow</a>
-                        <span class="author-description">{{ author.description }}</span>
-                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endif %}
+                {% endif %} -->
 
                 <!-- Post Title -->
                 <h1 class="posttitle">{{ page.title }}</h1>
@@ -45,7 +79,7 @@ post_class: post-template
 
             <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
             {% if site.adsense == "enabled" %}
-                {% include adsense-under-header.html %}
+            {% include adsense-under-header.html %}
             {% endif %}
             <!-- End Adsense -->
 
@@ -53,9 +87,13 @@ post_class: post-template
             {% if page.image %}
 
             {% if site.lazyimages == "enabled" %}
-            <img class="featured-image img-fluid lazyimg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=" data-src="{% if page.image contains "://" %}{{ page.image }}{% else %}{{ site.baseurl }}/{{ page.image }}{% endif %}" alt="{{ page.title }}">
+            <img class="featured-image img-fluid lazyimg"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII="
+                data-src="{% if page.image contains " ://" %}{{ page.image }}{% else %}{{ site.baseurl }}/{{ page.image
+                }}{% endif %}" alt="{{ page.title }}">
             {% else %}
-            <img class="featured-image img-fluid" src="{% if page.image contains "://" %}{{ page.image }}{% else %}{{ site.baseurl }}/{{ page.image }}{% endif %}" alt="{{ page.title }}">
+            <img class="featured-image img-fluid" src="{% if page.image contains " ://" %}{{ page.image }}{% else %}{{
+                site.baseurl }}/{{ page.image }}{% endif %}" alt="{{ page.title }}">
             {% endif %}
 
             {% endif %}
@@ -63,17 +101,7 @@ post_class: post-template
 
             <!-- Post Content -->
             <div class="article-post">
-                <!-- Toc if any -->
-                {% if page.toc %}
-                    {% if page.beforetoc %}
-                        <p><em>{{page.beforetoc}}</em></p>
-                    {% endif %}
-                    <div class="toc mt-4 mb-4 lead">
-                        <h3 class="font-weight-bold">Summary</h3>
-                        {% include toc.html html=content %}
-                    </div>
-                {% endif %}
-                <!-- End Toc -->
+
                 {{content}}
             </div>
 
@@ -84,13 +112,70 @@ post_class: post-template
             </div>
             {% endif %}
 
+            <!-- Author Box -->
+            {% if page.author %}
+            <h3 class="text-center d-md-none">About The Author</h3>
+            <h3 class="text-start d-md-flex d-none">About The Author</h3>
+            <div class="row post-top-meta">
+                <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                    {% if author.avatar %}
+                    <img class="author-thumb" src="{{site.baseurl}}/{{ author.avatar }}"
+                        alt="{{ author.display_name }}">
+                    {% else %}
+                    <img class="author-thumb" src="https://www.gravatar.com/avatar/{{ author.gravatar }}?s=250&d=mm&r=x"
+                        alt="{{ author.display_name }}">
+                    {% endif %}
+                </div>
+                <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                    <a target="_blank" class="link-dark" href="{{ author.web }}">{{ author.display_name }}</a>
+                    <!-- <a target="_blank" href="{{ author.twitter }}" class="btn follow">Follow</a> -->
+                    <span class="author-description">{{ author.description }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Authors Box -->
+            {% if page.authors %}
+            {% assign authors = page.authors | split: "," %}
+            <h3 class="text-center d-md-none">About The Authors</h3>
+            <h3 class="text-start d-md-flex d-none">About The Authors</h3>
+            <div class="mt-2">
+                {% for author_name in authors %}
+                {% assign author = site.authors[author_name] %}
+                {% if author %}
+                <!-- Author Box -->
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-2 mb-md-0">
+                        {% if author.avatar %}
+                        <img class="author-thumb" src="{{site.baseurl}}/{{ author.avatar }}"
+                            alt="{{ author.display_name }}">
+                        {% else %}
+                        <img class="author-thumb"
+                            src="https://www.gravatar.com/avatar/{{ author.gravatar }}?s=250&d=mm&r=x"
+                            alt="{{ author.display_name }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="{{ author.web }}">{{ author.display_name }}</a>
+                        <!-- <a target="_blank" href="{{ author.twitter }}" class="btn follow">Follow</a> -->
+                        <span class="author-description">{{ author.description }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
             <!-- Post Date -->
             <p>
-            <small>
-                <span class="post-date"><time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time></span>           
-                {% if page.last_modified_at %}
-                (Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>)
-                {% endif %}
+                <small>
+                    <span class="post-date"><time class="post-date" datetime="{{ page.date | date:" %Y-%m-%d" }}">{{
+                            page.date | date_to_string }}</time></span>
+                    {% if page.last_modified_at %}
+                    (Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}"
+                        itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>)
+                    {% endif %}
                 </small>
             </p>
 
@@ -100,7 +185,8 @@ post_class: post-template
                     {% assign sortedCategories = page.categories | sort %}
                     {% for category in sortedCategories %}
                     <li>
-                        <a class="smoothscroll" href="{{site.baseurl}}/categories#{{ category | replace: " ","-" }}">{{ category }}</a>
+                        <a class="smoothscroll" href="{{site.baseurl}}/categories#{{ category | replace: " "," -" }}">{{
+                            category }}</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -113,27 +199,39 @@ post_class: post-template
                     {% assign sortedTags = page.tags | sort %}
                     {% for tag in sortedTags %}
                     <li>
-                        <a class="smoothscroll" href="{{site.baseurl}}/tags#{{ tag | replace: " ","-" }}">#{{ tag }}</a>
+                        <a class="smoothscroll" href="{{site.baseurl}}/tags#{{ tag | replace: " "," -" }}">#{{ tag
+                            }}</a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
             <!-- End Tags -->
 
+
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
-            {% if page.previous.url %}
-            <a class="prev d-block col-md-6" href="{{ site.baseurl }}/{{page.previous.url}}"> &laquo; {{page.previous.title}}</a>
-            {% endif %}
-            {% if page.next.url %}
-            <a class="next d-block col-md-6 text-lg-right" href="{{ site.baseurl }}/{{page.next.url}}">{{page.next.title}} &raquo; </a>
-            {% endif %}
-            <div class="clearfix"></div>
+                {% if page.previous.url %}
+                <a class="prev d-block col-md-6" href="{{ site.baseurl }}/{{page.previous.url}}"> &laquo;
+                    {{page.previous.title}}</a>
+                {% endif %}
+                {% if page.next.url %}
+                <a class="next d-block col-md-6 text-lg-right"
+                    href="{{ site.baseurl }}/{{page.next.url}}">{{page.next.title}} &raquo; </a>
+                {% endif %}
+                <div class="clearfix"></div>
             </div>
             <!-- End Categories -->
 
         </div>
         <!-- End Post -->
+        {% if page.ctas%}
+        <div class="col-md-2 p-0">
+            {% include postcta.html %}
+        </div>
+        {% endif %}
+        <!-- <div class="col-md-2 d-md-none d-block pl-0">
+            {% include share.html %}
+        </div> -->
 
     </div>
 </div>
@@ -143,13 +241,13 @@ post_class: post-template
 <!-- Begin Comments
 ================================================== -->
 {% if page.comments != false %}
-    <div class="container">
-        <div id="comments" class="row justify-content-center mb-5">
-            <div class="col-md-8">
-                {% include disqus.html %}
-            </div>
+<div class="container">
+    <div id="comments" class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            {% include disqus.html %}
         </div>
     </div>
+</div>
 {% endif %}
 <!--End Comments
 ================================================== -->
