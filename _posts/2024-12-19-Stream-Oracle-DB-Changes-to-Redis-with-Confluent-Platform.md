@@ -92,36 +92,43 @@ $> wget https://d2p6pa21dvn84.cloudfront.net/api/plugins/redis/redis-enterprise-
 
 2. Open docker-compose.yml file in editor and add below sections:
 
-&emsp;&emsp;&emsp;&emsp;oracle-db:
-&emsp;&emsp;&emsp;&emsp;&emsp;image: heartu41/oracle19c
-&emsp;&emsp;&emsp;&emsp;&emsp;container_name: oracle
-&emsp;&emsp;&emsp;&emsp;&emsp;ports:
-&emsp;&emsp;&emsp;&emsp;&emsp;- "1521:1521"
-&emsp;&emsp;&emsp;&emsp;&emsp;environment:
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ORACLE_PWD: "Oracle123"
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ORACLE_SID: "ORCLCDB"
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ENABLE_ARCHIVELOG: true
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ENABLE_FORCE_LOGGING: true
-&emsp;&emsp;&emsp;&emsp;&emsp;volumes:
-&emsp;&emsp;&emsp;&emsp;&emsp;- ./oracleDB/oradata:/opt/oracle/oradata
-  
-&emsp;&emsp;&emsp;&emsp;redis:
-&emsp;&emsp;&emsp;&emsp;&emsp;image: redis/redis-stack-server
-&emsp;&emsp;&emsp;&emsp;&emsp;hostname: redis
-&emsp;&emsp;&emsp;&emsp;&emsp;container_name: redis
-&emsp;&emsp;&emsp;&emsp;&emsp;ports:
-&emsp;&emsp;&emsp;&emsp;&emsp;- "6379:6379"
+```
+  oracle-db:
+      image: heartu41/oracle19c
+      container_name: oracle
+      ports:
+        - "1521:1521"
+      environment:
+        ORACLE_PWD: "Oracle123"
+        ORACLE_SID: "ORCLCDB"
+        ENABLE_ARCHIVELOG: true
+        ENABLE_FORCE_LOGGING: true
+
+      volumes:
+        - ./oracleDB/oradata:/opt/oracle/oradata
+
+	
+
+  redis:
+      image: redis/redis-stack-server
+      hostname: redis
+      container_name: redis
+      ports:
+        - "6379:6379"
+```
 
 3.  Update section “Connect” in docker-compose.yml file to include Oracle CDC source and Redis Sink connector.
 
-&emsp;&emsp;&emsp;&emsp;&emsp;depends_on:
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- broker
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- schema-registry
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- redis
-
-&emsp;&emsp;&emsp;&emsp;&emsp;volumes:
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- ./confluentinc-kafka-connect-oracle-cdc-2.14.2:/usr/share/java/confluentinc-kafka-connect-oracle-cdc-2.14.2
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- ./redis-redis-kafka-connect-0.9.1:/usr/share/java/redis-redis-kafka-connect-0.9.1
+```
+  depends_on:
+    - broker
+    - schema-registry
+    - redis
+	
+  volumes:
+    - ./confluentinc-kafka-connect-oracle-cdc-2.14.2:/usr/share/java/confluentinc-kafka-connect-oracle-cdc-2.14.2
+    - ./redis-redis-kafka-connect-0.9.1:/usr/share/java/redis-redis-kafka-connect-0.9.1
+```
 
 4. Save changes made in above steps in docker-compose file.
 5. Ensure Oracle CDC Connector and Redis Sink connector files are extraced
@@ -140,7 +147,7 @@ $> docker compose up -d
 &emsp;&emsp;&emsp;&emsp;Each component of docker compose file will start in a separate container. The output will look similar to:
 
 ```sh
-            Creating broker 		    ... done
+            Creating broker 		... done
             Creating schema-registry 	... done
             Creating rest-proxy      	... done
             Creating connect         	... done
@@ -148,8 +155,8 @@ $> docker compose up -d
             Creating control-center  	... done
             Creating ksql-datagen    	... done
             Creating ksqldb-cli      	... done
-            Creating oracle-db		    ... done
-            Creating redis			    ... done
+            Creating oracle-db		... done
+            Creating redis		... done
 ```
 
 
@@ -197,17 +204,17 @@ After the Oracle database is operational, we must configure it to activate ARCHI
 
 ```
     SQL> SHUTDOWN IMMEDIATE;
-	SQL> STARTUP MOUNT;
-	SQL> ALTER DATABASE ARCHIVELOG;
-	SQL> ALTER DATABASE OPEN;
+    SQL> STARTUP MOUNT;
+    SQL> ALTER DATABASE ARCHIVELOG;
+    SQL> ALTER DATABASE OPEN;
 ```
 
 &emsp;&emsp;&emsp;Check again for log_mode.
 ```
     SQL> select log_mode from v$database;
-	LOG_MODE
-	------------
-	ARCHIVELOG
+	 LOG_MODE
+	 ------------
+	 ARCHIVELOG
 ```
 4. Create role and grant required Access and permissions.
 
@@ -272,9 +279,9 @@ GRANT FLASHBACK ANY TABLE TO C##MYUSER container=all;
 
 6. Create Userdata table and Clickstream table.
 ```
-CREATE TABLE C##MYUSER.POC_USERDATA (
-    		ID			 VARCHAR2(50) PRIMARY KEY,
-    		NAME         VARCHAR2(50) 
+        CREATE TABLE C##MYUSER.POC_USERDATA (
+    		ID	   VARCHAR2(50) PRIMARY KEY,
+    		NAME       VARCHAR2(50) 
 	);
 	GRANT SELECT ON C##MYUSER.POC_USERDATA TO C##CDC_PRIVS;
 	INSERT INTO C##MYUSER.POC_USERDATA (ID, NAME)
@@ -282,17 +289,18 @@ CREATE TABLE C##MYUSER.POC_USERDATA (
 	COMMIT;
 
 	CREATE TABLE C##MYUSER.POC_CLICKSTREAM (
-   		EVENTID          VARCHAR2(50) PRIMARY KEY,
+   	    EVENTID          VARCHAR2(50) PRIMARY KEY,
 	    ID				 VARCHAR2(50),
 	    NAME             VARCHAR2(50),
 	    SESSIONID        VARCHAR2(50),
-        EVENTTYPE        VARCHAR2(50),
-        PAGEURL          VARCHAR2(255),
-        EVENTTIMESTAMP   TIMESTAMP
+            EVENTTYPE        VARCHAR2(50),
+            PAGEURL          VARCHAR2(255),
+            EVENTTIMESTAMP   TIMESTAMP
 	);
+
 	GRANT SELECT ON C##MYUSER.POC_CLICKSTREAM TO C##CDC_PRIVS;
-	INSERT INTO C##MYUSER.POC_CLICKSTREAM (EVENTID, ID, NAME, SESSIONID, 	EVENTTYPE, PAGEURL, EVENTTIMESTAMP)
-	VALUES (1, '101', 'jdoe', 'sess456', 'page_view', 'https://example.com/home', 	CURRENT_TIMESTAMP);
+	INSERT INTO C##MYUSER.POC_CLICKSTREAM (EVENTID, ID, NAME, SESSIONID, EVENTTYPE, PAGEURL, EVENTTIMESTAMP)
+	VALUES (1, '101', 'jdoe', 'sess456', 'page_view', 'https://example.com/home', CURRENT_TIMESTAMP);
 	COMMIT;
 ```
 
@@ -311,106 +319,107 @@ This confirms the source and sink connector plugins are available with Kafka Con
 
 ## _Configure Oracle CDC Source Connector_
 Create Oracle CDC source connector configuration "userstream_source_connector.json" with content:
-
+```
 {
-&emsp;&emsp;&emsp;"name": "userdata_avro",
-&emsp;&emsp;&emsp;"config":{
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"connector.class": "io.confluent.connect.oracle.cdc.OracleCdcSourceConnector",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"name": "userdata_avro",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"tasks.max":1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"confluent.topic.bootstrap.servers":"broker:29092",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.server": "oracle",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.port": 1521,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.sid":"ORCLCDB",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.username": "C##MYUSER",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.password": "password",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"start.from":"snapshot",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.POC_USER(.*)",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.exclusion.regex":"",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.topic.name.template": "${fullyQualifiedTableName}",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"connection.pool.max.size": 20,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"confluent.topic.replication.factor":1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redo.log.consumer.bootstrap.servers":"broker:29092",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redo.log.corruption.topic": "redo-corruption-topic",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.groups": "redo",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.include": "redo-log-topic",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.replication.factor": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.partitions": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.cleanup.policy": "delete",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.retention.ms": 1209600000,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.replication.factor": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.partitions": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.cleanup.policy": "delete",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms": "dropExtraFields",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms.dropExtraFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms.dropExtraFields.blacklist": "scn, op_type, op_ts, current_ts, row_id, username"
-&emsp;&emsp;&emsp;&emsp;}
+    "name": "userdata_avro",
+    "config":{
+      "connector.class": "io.confluent.connect.oracle.cdc.OracleCdcSourceConnector",
+      "name": "userdata_avro",
+      "tasks.max":1,
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "confluent.topic.bootstrap.servers":"broker:29092",
+      "oracle.server": "oracle",
+      "oracle.port": 1521,
+      "oracle.sid":"ORCLCDB",
+      "oracle.username": "C##MYUSER",
+      "oracle.password": "password",
+      "start.from":"snapshot",
+      "table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.POC_USER(.*)",
+      "table.exclusion.regex":"",
+      "table.topic.name.template": "${fullyQualifiedTableName}",
+      "connection.pool.max.size": 20,
+      "confluent.topic.replication.factor":1,
+      "redo.log.consumer.bootstrap.servers":"broker:29092",
+      "redo.log.corruption.topic": "redo-corruption-topic",
+      "topic.creation.groups": "redo",
+      "topic.creation.redo.include": "redo-log-topic",
+      "topic.creation.redo.replication.factor": 1,
+      "topic.creation.redo.partitions": 1,
+      "topic.creation.redo.cleanup.policy": "delete",
+      "topic.creation.redo.retention.ms": 1209600000,
+      "topic.creation.default.replication.factor": 1,
+      "topic.creation.default.partitions": 1,
+      "topic.creation.default.cleanup.policy": "delete",
+      "transforms": "dropExtraFields",
+      "transforms.dropExtraFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+      "transforms.dropExtraFields.blacklist": "scn, op_type, op_ts, current_ts, row_id, username"
+    }
 }
-
+```
 
 Similarly create clickstream data source connector configuration json file clickstream_source_connector.json with contents:
-
+```
 {
-&emsp;&emsp;&emsp;"name": "clickstream_avro",
-&emsp;&emsp;&emsp;"config":{
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"connector.class": "io.confluent.connect.oracle.cdc.OracleCdcSourceConnector",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"name": "clickstream_avro",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"tasks.max":1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"confluent.topic.bootstrap.servers":"broker:29092",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.server": "oracle",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.port": 1521,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.sid":"ORCLCDB",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.username": "C##MYUSER",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"oracle.password": "password",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"start.from":"snapshot",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.POC_CLICK(.*)",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.exclusion.regex":"",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"table.topic.name.template": "${fullyQualifiedTableName}",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"connection.pool.max.size": 20,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"confluent.topic.replication.factor":1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redo.log.consumer.bootstrap.servers":"broker:29092",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redo.log.corruption.topic": "redo-corruption-topic",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.groups": "redo",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.include": "redo-log-topic",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.replication.factor": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.partitions": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.cleanup.policy": "delete",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.redo.retention.ms": 1209600000,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.replication.factor": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.partitions": 1,
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topic.creation.default.cleanup.policy": "delete",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms": "dropExtraFields",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms.dropExtraFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"transforms.dropExtraFields.blacklist": "scn, op_type, op_ts, current_ts, row_id, username"
-&emsp;&emsp;&emsp;&emsp;}
+    "name": "clickstream_avro",
+    "config":{
+      "connector.class": "io.confluent.connect.oracle.cdc.OracleCdcSourceConnector",
+      "name": "clickstream_avro",
+      "tasks.max":1,
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "confluent.topic.bootstrap.servers":"broker:29092",
+      "oracle.server": "oracle",
+      "oracle.port": 1521,
+      "oracle.sid":"ORCLCDB",
+      "oracle.username": "C##MYUSER",
+      "oracle.password": "password",
+      "start.from":"snapshot",
+      "table.inclusion.regex":"ORCLCDB\\.C##MYUSER\\.POC_CLICK(.*)",
+      "table.exclusion.regex":"",
+      "table.topic.name.template": "${fullyQualifiedTableName}",
+      "connection.pool.max.size": 20,
+      "confluent.topic.replication.factor":1,
+      "redo.log.consumer.bootstrap.servers":"broker:29092",
+      "redo.log.corruption.topic": "redo-corruption-topic",
+      "topic.creation.groups": "redo",
+      "topic.creation.redo.include": "redo-log-topic",
+      "topic.creation.redo.replication.factor": 1,
+      "topic.creation.redo.partitions": 1,
+      "topic.creation.redo.cleanup.policy": "delete",
+      "topic.creation.redo.retention.ms": 1209600000,
+      "topic.creation.default.replication.factor": 1,
+      "topic.creation.default.partitions": 1,
+      "topic.creation.default.cleanup.policy": "delete",
+      "transforms": "dropExtraFields",
+      "transforms.dropExtraFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+      "transforms.dropExtraFields.blacklist": "scn, op_type, op_ts, current_ts, row_id, username"
+    }
 }
-
+```
 ## _Configure Redis Sink Connector_
 Create Redis sink connector redis_sink.json using configuration:
+```
 {
-&emsp;&emsp;&emsp;&emsp;"name": "redis-sink-json",
-&emsp;&emsp;&emsp;&emsp;"config": {
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"connector.class":"com.redis.kafka.connect.RedisSinkConnector",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"tasks.max":"1",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"topics":"USER_AGGREGATE_EVENTS",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redis.uri":"redis://redis:6379",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"redis.command":"JSONSET",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"key.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter": "io.confluent.connect.avro.AvroConverter",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"value.converter.schema.registry.url": "http://schema-registry:8081",
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"schemas.enable": "false"
-&emsp;&emsp;&emsp;&emsp;}
+    "name": "redis-sink-json",
+    "config": {
+      "connector.class":"com.redis.kafka.connect.RedisSinkConnector",
+      "tasks.max":"1",
+      "topics":"USER_AGGREGATE_EVENTS",
+      "redis.uri":"redis://redis:6379",
+      "redis.command":"JSONSET",
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "schemas.enable": "false"
+   }
 }
-
+```
 
 Start connector based on the configuration created above
 
@@ -433,42 +442,45 @@ With the userdata and clickstream source connector configured, the Oracle CDC so
 1. Login to Confluent Control Center using http://<host-ip>:9021
 2. Navigate to Cluster Overview → ksqlDB.
 3. In ksqlDB editor, set “auto.offset.reset”=”earliest” and enter below query to create Streams and Tables. Click “Run query” button to submit.
-
+```
 CREATE TABLE POC_USERDATA_STREAM (
-&emsp;&emsp;ID STRING PRIMARY KEY,
-&emsp;&emsp;NAME STRING
-&emsp;&emsp;) WITH (
-&emsp;&emsp;KAFKA_TOPIC = 'ORCLCDB.C__MYUSER.POC_USERDATA',
-&emsp;&emsp;KEY_FORMAT = 'AVRO',
-&emsp;&emsp;VALUE_FORMAT = 'AVRO'
+ID STRING PRIMARY KEY,
+NAME STRING
+) WITH (
+  KAFKA_TOPIC = 'ORCLCDB.C__MYUSER.POC_USERDATA',
+  KEY_FORMAT = 'AVRO',
+  VALUE_FORMAT = 'AVRO'
 );
-
-
+```
+```
 CREATE STREAM POC_CLICKSTREAM_STREAM (
-&emsp;&emsp;EVENTID STRING,
-&emsp;&emsp;ID STRING,
-&emsp;&emsp;NAME STRING,
-&emsp;&emsp;SESSIONID STRING,
-&emsp;&emsp;EVENTTYPE STRING,
-&emsp;&emsp;PAGEURL STRING,
-&emsp;&emsp;EVENTTIMESTAMP BIGINT
-&emsp;&emsp;) WITH (
-&emsp;&emsp;KAFKA_TOPIC = 'ORCLCDB.C__MYUSER.POC_CLICKSTREAM',
-&emsp;&emsp;KEY_FORMAT = 'AVRO',
-&emsp;&emsp;VALUE_FORMAT = 'AVRO'
+EVENTID STRING,
+ID STRING,
+NAME STRING,
+SESSIONID STRING,
+EVENTTYPE STRING,
+PAGEURL STRING,
+EVENTTIMESTAMP BIGINT
+) WITH (
+  KAFKA_TOPIC = 'ORCLCDB.C__MYUSER.POC_CLICKSTREAM',
+  KEY_FORMAT = 'AVRO',
+  VALUE_FORMAT = 'AVRO'
 );
+```
 
+```
 CREATE TABLE USER_AGGREGATE_EVENTS
 WITH (
-&emsp;&emsp;KEY_FORMAT = 'AVRO',
-&emsp;&emsp;VALUE_FORMAT = 'AVRO'
+  KEY_FORMAT = 'AVRO',
+  VALUE_FORMAT = 'AVRO'
 ) AS
 SELECT
-&emsp;&emsp;NAME,
-&emsp;&emsp;COUNT(*) AS EVENT_COUNT
+  NAME,
+  COUNT(*) AS EVENT_COUNT
 FROM POC_CLICKSTREAM_STREAM
 WINDOW TUMBLING (SIZE 1 MINUTE)
-GROUP BY NAME; 
+GROUP BY NAME;
+```
 
 The Stream and Table created can be verified by navigating to ksqlDB --> Streams or ksqlDB --> Tables on Control Center GUI.
 
